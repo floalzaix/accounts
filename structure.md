@@ -24,7 +24,7 @@
 
 ---
 
-3. Artecture 
+3. Architecture 
 
     The project will be implemented with a **MVC** (Model View Controller) architecture.
 
@@ -50,25 +50,11 @@
     > The DB Scheme :
 
     ```mermaid
-            requirementDiagram
-
-            requirement test_rceq {
-            id: 1
-            text: the test text.
-            risk: high
-            verifymethod: test
-            }
-
-            element test_entity {
-            type: simulation
-            }
-
-            element test {
-            d: 2
-            }
-
-            
-            test_entity - satisfies -> test_rceq
-            test - satisfies -> test_rceq
+            erDiagram
+                login {
+                    VARCHAR(50) id PK
+                    VARCHAR(100) name "NOT NULL"
+                    VARCHAR(256) hash "NOT NULL"
+                }
     ```
 
