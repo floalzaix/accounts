@@ -4,6 +4,7 @@ namespace Controllers\Router\Routes;
 
 use Controllers\Router\Route;
 use Exception;
+use Helpers\MessageHandler;
 
 class RouteLogin extends Route {
     protected function get($params = []) : void {
@@ -11,10 +12,26 @@ class RouteLogin extends Route {
     }
 
     protected function post($params = []) : void {
-        if ($this->controller->validLogin(parent::getParam($params, "login_name"), parent::getParam($params, "login_pwd"))) {
+        $logged = false;
+        $error = false;
+        $message = "";
 
+        try {
+            if ($this->controller->validLogin(parent::getParam($params, "login_name"), parent::getParam($params, "login_pwd"))) {
+                $logged = true;
+            } else {
+                throw new Exception("Le mot de passe ou le nom d'utilisateur n'est pas valide");
+            }
+        } catch (Exception $err) {
+            $error = true;
+            $message = $err->getMessage();
+        }
+
+        MessageHandler::setMessageToPage($message, "login", $error);
+        if($logged) {
+            
         } else {
-            throw new Exception("Le mot de passe ou le nom d'utilisateur n'est pas valide");
+            $this->controller->displayLogin();
         }
     }
 }

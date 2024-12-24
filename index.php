@@ -16,6 +16,7 @@ $loader->addNamespace("\Config", "/config");
 use Controllers\Router\Router;
 
 $router = new Router();
+
 $router->routing($_GET, $_POST);
 
 ?>
