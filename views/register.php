@@ -1,5 +1,7 @@
 <?php
     $this->layout("template", ["title" => $title]);
+    
+    use Helpers\MessageHandler;
 ?>
 
 <h1>Register</h1>
@@ -15,3 +17,5 @@
     <a href="index.php?action=login" class="bouton">Connection</a>
     <a href="index.php?action=recovery" class="bouton">Mot de passe oublié</a>
 </div>
+
+<?= MessageHandler::displayMessage("register"); ?>

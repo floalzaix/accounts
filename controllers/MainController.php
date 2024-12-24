@@ -7,6 +7,7 @@ use Config\Config;
 use Models\UserDAO;
 use Models\User;
 use Exception;
+use Helpers\MessageHandler;
 
 class MainController {
     private $templates;
@@ -18,10 +19,12 @@ class MainController {
     }
 
     public function displayLogin($params = []) : void {
+        MessageHandler::setMessageToPage($params["message"] ?? "", "login", $params["error"] ?? false);
         echo $this->templates->render("login", ["title" => Config::get("title")]);
     }
 
     public function displayRegister($params = []) : void {
+        MessageHandler::setMessageToPage($params["message"] ?? "", "register", $params["error"] ?? false);
         echo $this->templates->render("register", ["title" => Config::get("title")]);
     }
 

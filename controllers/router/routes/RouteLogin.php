@@ -4,7 +4,6 @@ namespace Controllers\Router\Routes;
 
 use Controllers\Router\Route;
 use Exception;
-use Helpers\MessageHandler;
 
 class RouteLogin extends Route {
     protected function get($params = []) : void {
@@ -27,11 +26,10 @@ class RouteLogin extends Route {
             $message = $err->getMessage();
         }
 
-        MessageHandler::setMessageToPage($message, "login", $error);
         if($logged) {
             
         } else {
-            $this->controller->displayLogin();
+            $this->controller->displayLogin(["message" => $message, "error" => $error]);
         }
     }
 }
