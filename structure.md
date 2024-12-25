@@ -72,6 +72,7 @@
 
      * [ ] A field for the name of the account
      * [ ] A field for the level of categories
+     * [x] Link with the database DAO objects
 
     > The DB Scheme :
 
@@ -82,9 +83,15 @@
                     VARCHAR(100) name "NOT NULL UNIQUE"
                     VARCHAR(256) hash "NOT NULL"
                 }
-                transactions {
+                accounts {
                     VARCHAR(50) id PK
                     VARCHAR(50) id_user FK
+                    VARCHAR(100) name "NOT NULL"
+                    TINYINT nb_of_categories "NOT NULL"
+                }
+                transactions {
+                    VARCHAR(50) id PK
+                    VARCHAR(50) id_account FK
                     DATE date "NOT NULL"
                     VARCHAR(100) title 
                     DATE bank_date 
@@ -92,6 +99,7 @@
                 }
                 categories {
                     VARCHAR(50) id PK
+                    VARCHAR(50) id_user FK
                     VARCHAR(50) name "NOT NULL"
                 }
                 transactions_categories {
@@ -102,7 +110,7 @@
 
 ---
 
-6. Data analysis (summary feedback)
+1. Data analysis (summary feedback)
 
     > The aim of this page is to have a list of the accounts an then to be able to access one and to add data or to check the summary
 
