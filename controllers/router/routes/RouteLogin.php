@@ -27,7 +27,7 @@ class RouteLogin extends Route {
         }
 
         if($logged) {
-            
+            $this->controller->displayHome(["user" => parent::getParam($params, "login_name")]);
         } else {
             $this->controller->displayLogin(["message" => $message, "error" => $error]);
         }

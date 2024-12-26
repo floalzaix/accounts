@@ -5,6 +5,7 @@ namespace Controllers;
 use League\Plates\Engine;
 use Config\Config;
 use Models\UserDAO;
+use Models\AccountDAO;
 use Models\User;
 use Exception;
 use Helpers\MessageHandler;
@@ -12,10 +13,18 @@ use Helpers\MessageHandler;
 class MainController {
     private $templates;
     private $user_dao;
+    private $account_dao;
 
     public function __construct() {
         $this->templates = new Engine("views");
         $this->user_dao = new UserDAO();
+        $this->account_dao = new AccountDAO();
+    }
+
+    public function displayHome($params = []) : void {
+        $user = $this->user_dao->getByName($params["user"] ?? null);
+        $accounts = $this->account_dao->getAllOfUser($user->getId());
+        echo $this->templates->render("home", ["title" => Config::get("title"), "user" => $user, "accounts" => $accounts]);
     }
 
     public function displayLogin($params = []) : void {

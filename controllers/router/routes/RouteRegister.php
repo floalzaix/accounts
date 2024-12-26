@@ -24,7 +24,7 @@ class RouteRegister extends Route {
         }
         
         if ($registered) {
-            
+            $this->controller->displayHome(["user" => parent::getParam($params, "login_name")]);
         } else {
             $this->controller->displayRegister(["message" => $message, "error" => $error]);
         }
