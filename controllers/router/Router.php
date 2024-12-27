@@ -4,7 +4,10 @@ namespace Controllers\Router;
 
 use Controllers\MainController;
 use Controllers\ErrorController;
+use Controllers\AccountsController;
 
+use Controllers\Router\Routes\RouteAddAccount;
+use Controllers\Router\Routes\RouteHome;
 use Controllers\Router\Routes\RouteLogin;
 use Controllers\Router\Routes\RouteError404;
 use Controllers\Router\Routes\RouteRegister;
@@ -23,7 +26,8 @@ class Router {
     private function createControllerList() : void {
         $this->ctrl_list = [
             "main" => new MainController(),
-            "error" => new ErrorController()
+            "error" => new ErrorController(),
+            "accounts" => new AccountsController()
         ];
     }
 
@@ -31,7 +35,9 @@ class Router {
         $this->route_list = [
             "login" => new RouteLogin($this->ctrl_list["main"]),
             "err-404" => new RouteError404($this->ctrl_list["error"]),
-            "register" => new RouteRegister($this->ctrl_list["main"])
+            "register" => new RouteRegister($this->ctrl_list["main"]),
+            "home" => new RouteHome($this->ctrl_list["main"]),
+            "add-account" => new RouteAddAccount($this->ctrl_list["accounts"])
         ];
     }
 
@@ -49,8 +55,13 @@ class Router {
         if (!empty($post)) {
             $method = "POST";
         }
-        if (isset($get[$this->action_key])) {
-            $route = $this->getRoute($get[$this->action_key]);
+        $action = $get[$this->action_key];
+        if (isset($action)) {
+            $route = $this->getRoute($action);
+            if ($action == "deco") {
+                $route = $this->route_list["login"];
+                $post["deco"] = true;
+            }
         } 
         $route->action($post, $method);
     } 

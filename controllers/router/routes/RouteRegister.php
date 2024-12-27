@@ -11,23 +11,20 @@ class RouteRegister extends Route {
     }
 
     protected function post($params = []) : void {
-        $registered = false;
         $error = false;
         $message = "";
         try {
-            if ($this->controller->validRegister(parent::getParam($params, "login_name"), parent::getParam($params, "login_pwd"), parent::getParam($params, "login_pwd_confirm"))) {
-                $registered = true;
+            $user = $this->controller->validRegister(parent::getParam($params, "login_name"), parent::getParam($params, "login_pwd"), parent::getParam($params, "login_pwd_confirm"));
+            if (isset($user)) {
+                $this->controller->authentification($user);
+                header("Location: index.php?action=home");
+                exit();
             }
         } catch (Exception $err) {
             $error = true;
             $message = $err->getMessage();
         }
-        
-        if ($registered) {
-            $this->controller->displayHome(["user" => parent::getParam($params, "login_name")]);
-        } else {
-            $this->controller->displayRegister(["message" => $message, "error" => $error]);
-        }
+        $this->controller->displayRegister(["message" => $message, "error" => $error]);
     }
 }
 

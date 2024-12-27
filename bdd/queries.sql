@@ -51,4 +51,4 @@ CREATE TABLE transactions_categories (
     FOREIGN KEY (id_category) REFERENCES categories(id)
 );
 
-
+SELECT * FROM accounts;

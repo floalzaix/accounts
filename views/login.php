@@ -2,7 +2,7 @@
     /**
      * Définition du template
      */
-    $this->layout("template", ["title" => $title]);
+    $this->layout("login_template", ["title" => $title]);
     
 ?>
 

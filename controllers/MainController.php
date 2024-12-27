@@ -16,15 +16,17 @@ class MainController {
     private $account_dao;
 
     public function __construct() {
+        session_start();
         $this->templates = new Engine("views");
         $this->user_dao = new UserDAO();
         $this->account_dao = new AccountDAO();
     }
 
     public function displayHome($params = []) : void {
-        $user = $this->user_dao->getByName($params["user"] ?? null);
-        $accounts = $this->account_dao->getAllOfUser($user->getId());
-        echo $this->templates->render("home", ["title" => Config::get("title"), "user" => $user, "accounts" => $accounts]);
+        $user = $this->user_dao->getByName($params["user"] ?? (isset($_SESSION["user"]) ? $_SESSION["user"]->getName() : ""));
+        $accounts = $this->account_dao->getAllOfUser(isset($user) ? $user->getId() : "");
+        MessageHandler::setMessageToPage($params["message"] ?? "", "login", $params["error"] ?? false);
+        echo $this->templates->render("home", ["title" => Config::get("title"), "user_name" => isset($user) ? $user->getName() : "", "accounts" => $accounts]);
     }
 
     public function displayLogin($params = []) : void {
@@ -37,14 +39,14 @@ class MainController {
         echo $this->templates->render("register", ["title" => Config::get("title")]);
     }
 
-    public function validLogin(string $name, string $pwd) : bool {
+    public function validLogin(string $name, string $pwd) : ?User {
         $user = $this->user_dao->getByName($name);
         if (isset($user) && $user->verifyPassword($pwd)) {
-            return true;
+            return $user;
         }
-        return false;
+        return null;
     }
-    public function validRegister(string $name, string $pwd, string $pwd_confirm) : bool {
+    public function validRegister(string $name, string $pwd, string $pwd_confirm) : ?User {
         $user = $this->user_dao->getByName($name);
         if (isset($user)) {
             throw new Exception("Erreur un utilisateur à déjà ce nom");
@@ -55,7 +57,22 @@ class MainController {
         $hash = hash("sha256", $pwd);
         $user = new User($name, $hash);
         $this->user_dao->createUser($user);
-        return true;
+        return $user;
+    }
+    public function authentification(User $user) : void {
+        $_SESSION["user"] = $user;
+    }
+    public function connected() : bool {
+        if (isset($_SESSION["user"])) {
+            return true;
+        }
+        return false;
+    }
+    public function disconnection() : void {
+        session_unset();
+        session_destroy();
+        header("Location: index.php?action=login");
+        exit();
     }
 }
 

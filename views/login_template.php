@@ -7,12 +7,7 @@
         <title><?= $this->e($title) ?></title>
     </head>
     <body>
-        <!-- #contenu -->
         <main id="contenu">
-            <a href="index.php?action=home">Home</a>
-            <a href="index.php?action=add-account">+</a>
-            <a href="index.php?action=deco">Quit</a>
-
             <?= $this->section('content') ?>
         </main>
     </body>

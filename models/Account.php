@@ -25,6 +25,10 @@ class Account {
         $this->id = uniqid("account_");
     }
 
+    public function __toString() : string {
+        return "This is the display of an account !";
+    }
+
     //Getters
     public function getId() : string {
         return $this->id;

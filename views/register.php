@@ -1,5 +1,5 @@
 <?php
-    $this->layout("template", ["title" => $title]);
+    $this->layout("login_template", ["title" => $title]);
     
     use Helpers\MessageHandler;
 ?>
