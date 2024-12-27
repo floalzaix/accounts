@@ -13,9 +13,6 @@
             <a href="index.php?action=add-account">+</a>
             <a href="index.php?action=deco">Quit</a>
 
-            <a href="index.php?action=input">Données</a>
-            <a href="index.php?action=summary">Récap</a>
-
             <?= $this->section('content') ?>
         </main>
     </body>

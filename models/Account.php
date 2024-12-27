@@ -26,7 +26,8 @@ class Account {
     }
 
     public function __toString() : string {
-        return "This is the display of an account !";
+        echo "<a href='index.php?action=inputs&id={$this->getId()}'>{$this->getName()}</a>";
+        return "This is the display of the accont intitled : ".$this->getName();
     }
 
     //Getters

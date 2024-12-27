@@ -1,6 +1,6 @@
 <?php
 
-$this->layout("template", ["title" => $title]);
+$this->layout("home_template", ["title" => $title]);
 
 ?>
 

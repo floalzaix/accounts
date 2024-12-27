@@ -6,11 +6,18 @@ use Exception;
 use Models\BasePDODAO;
 
 class CategoryDAO extends BasePDODAO {
-    public function getAllOfUser(string $id_user) : array {
+    public function getAllOfAccount(string $id_account) : array {
         $categories = [];
 
-        $sql = "SELECT * FROM categories WHERE id_user=:id_user ORDER BY name";
-        $query = $this->execRequest($sql, ["id_user" => $id_user]);
+        $sql = "
+            SELECT * 
+            FROM categories c
+            INNER JOIN transactions_categories tc ON tc.id_category = c.id
+            INNER JOIN transactions t ON t.id = tc.id_transaction
+            WHERE t.id_account=:id_account 
+            ORDER BY name
+        ";
+        $query = $this->execRequest($sql, ["id_account" => $id_account]);
 
         if ($query == false) {
             throw new Exception("Erreur lors de la récupération de toutes les catégories en base de donnée.");

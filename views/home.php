@@ -1,6 +1,6 @@
 <?php
 
-$this->layout("template", ["title" => $title]);
+$this->layout("home_template", ["title" => $title]);
 
 ?>
 
@@ -11,7 +11,7 @@ $this->layout("template", ["title" => $title]);
 
     <?php
         foreach($accounts as $account) {
-            echo $account->__toString();
+            $account->__toString();
         }
     ?>
 </div>

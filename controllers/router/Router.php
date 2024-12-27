@@ -8,6 +8,7 @@ use Controllers\AccountsController;
 
 use Controllers\Router\Routes\RouteAddAccount;
 use Controllers\Router\Routes\RouteHome;
+use Controllers\Router\Routes\RouteInputs;
 use Controllers\Router\Routes\RouteLogin;
 use Controllers\Router\Routes\RouteError404;
 use Controllers\Router\Routes\RouteRegister;
@@ -37,7 +38,8 @@ class Router {
             "err-404" => new RouteError404($this->ctrl_list["error"]),
             "register" => new RouteRegister($this->ctrl_list["main"]),
             "home" => new RouteHome($this->ctrl_list["main"]),
-            "add-account" => new RouteAddAccount($this->ctrl_list["accounts"])
+            "add-account" => new RouteAddAccount($this->ctrl_list["accounts"]),
+            "inputs" => new RouteInputs($this->ctrl_list["accounts"])
         ];
     }
 
@@ -61,8 +63,10 @@ class Router {
             if ($action == "deco") {
                 $route = $this->route_list["login"];
                 $post["deco"] = true;
-            }
-        } 
+            } elseif ($action == "inputs") {
+                $route = $this->route_list["inputs"];
+                $post["id_account"] = $get["id"] ?? "";
+            }        } 
         $route->action($post, $method);
     } 
 }

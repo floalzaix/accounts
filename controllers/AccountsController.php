@@ -7,19 +7,53 @@ use Config\Config;
 use Helpers\MessageHandler;
 use Models\Account;
 use Models\AccountDAO;
+use Models\CategoryDAO;
+use Models\Transaction;
+use Models\TransactionDAO;
+use Models\Category;
 
 class AccountsController {
     private $templates;
     private $account_dao;
+    private $transaction_dao;
+    private $category_dao;
 
     public function __construct() {
         $this->templates = new Engine("views");
         $this->account_dao = new AccountDAO();
+        $this->transaction_dao = new TransactionDAO();
+        $this->category_dao = new CategoryDAO();
     }
 
     public function displayAddAccount($params = []) : void {
         MessageHandler::setMessageToPage($params["message"] ?? "", "add-account", $params["error"] ?? false);
         echo $this->templates->render("add-account", ["title" => Config::get("title")]);
+    }
+
+    public function displayInputs($params = []) : void {
+        $account = $this->account_dao->getById($params["id_account"] ?? "");
+        $transactions = $this->transaction_dao->getAllOfAccount($params["id_account"] ?? "");
+        $categories = $this->category_dao->getAllOfAccount($params["id_account"] ?? "");
+        MessageHandler::setMessageToPage($params["message"] ?? "", "inputs", $params["error"] ?? false);
+        echo $this->templates->render("inputs", [
+            "title" => Config::get("title"),
+            "year" => Config::get("year"),
+            "transactions" => $transactions,
+            "nb_of_categories" => isset($account) ? $account->getNbOfCategories() : 0,
+            "categories" => $categories,
+            "id_account" => $params["id_account"] ?? ""
+        ]);
+    }
+
+    public function createTransaction(string $id_account, string $date, string $title, string $bank_date, array $categories, int $amount) : void {
+        $transaction = new Transaction($id_account, $date, $title, $bank_date, $categories, $amount);
+        $this->transaction_dao->create($transaction);
+    }
+    public function getAccount(string $id_account) : ?Account {
+        return $this->account_dao->getById($id_account);
+    }
+    public function getCategory(string $id_cat) : ?Category {
+        return $this->category_dao->getById($id_cat);
     }
 
     public function createAccount(string $name, int $nb_of_categories) : Account {

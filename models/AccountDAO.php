@@ -26,6 +26,10 @@ class AccountDAO extends BasePDODAO {
         $sql = "SELECT * FROM accounts WHERE id=:id";
         $query = $this->execRequest($sql, ["id" => $id]);
 
+        if ($query == false) {
+            throw new Exception("Erreur lors de la récupération d'un compte dans la base de donnée");
+        }
+
         $account = null;
 
         if ($query->rowCount() == 1) {

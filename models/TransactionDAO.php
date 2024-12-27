@@ -17,7 +17,7 @@ class TransactionDAO extends BasePDODAO {
             WHERE t.id_account=:id_account
             ORDER BY date;
         ";
-        $query = $this->execRequest($sql, ["id_user" => $id_account]);
+        $query = $this->execRequest($sql, ["id_account" => $id_account]);
 
         if ($query == false) {
             throw new Exception("Erreur lors de la récupération de toutes les transactions en base de donnée.");
@@ -63,7 +63,6 @@ class TransactionDAO extends BasePDODAO {
         $query = $this->execRequest($sql, [
             "id" => $transaction->getId(),
             "id_account" => $transaction->getIdAccount(),
-            "name" => $transaction->getName(),
             "date" => $transaction->getDate(),
             "title" => $transaction->getTitle(),
             "bank_date" => $transaction->getBankDate(),
