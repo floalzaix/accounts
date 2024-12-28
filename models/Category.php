@@ -4,12 +4,13 @@ namespace Models;
 
 class Category {
     private string $id;
-    private string $id_user;
+    private string $id_account;
     private string $name;
+    private int $level;
 
-    public function __construct(string $name, string $id_user) {
+    public function __construct(string $name, string $id_account) {
         $this->createId();
-        $this->id_user = $id_user;
+        $this->id_account = $id_account;
         $this->name = $name;
     }
 
@@ -26,22 +27,28 @@ class Category {
     public function getId() : string {
         return $this->id;
     }
-    public function getIdUser() : string {
-        return $this->id_user;
+    public function getIdAccount() : string {
+        return $this->id_account;
     }
     public function getName() : string {
         return $this->name;
+    }
+    public function getLevel() : int {
+        return $this->level;
     }
 
     //Setters
     public function setId(string $id) : void {
         $this->id = $id;
     }
-    public function setIdUser(string $id_user) : void {
-        $this->id_user = $id_user;
+    public function setIdAccount(string $id_account) : void {
+        $this->id_account = $id_account;
     }
     public function setName(string $name) : void {
         $this->name = $name;
+    }
+    public function setLevel(int $level) : void {
+        $this->level = $level;
     }
 }
 

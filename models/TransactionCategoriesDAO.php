@@ -6,7 +6,7 @@ use Models\BasePDODAO;
 use Models\Category;
 use Exception;
 
-class TransactionCategories extends BasePDODAO {
+class TransactionCategoriesDAO extends BasePDODAO {
     protected function getCategoriesOfTransaction(string $id_transaction) : array {
         $categories = [];
 

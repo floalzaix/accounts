@@ -11,6 +11,8 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 
+DROP TABLE IF EXISTS cat_hierarchy;
+DROP TABLE IF EXISTS categories_level;
 DROP TABLE IF EXISTS transactions_categories;
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS accounts;
@@ -39,7 +41,7 @@ DROP TABLE IF EXISTS categories;
 
 CREATE TABLE categories (
     id VARCHAR(50),
-    id_user VARCHAR(50),
+    id_account VARCHAR(50),
     name VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -51,13 +53,29 @@ CREATE TABLE transactions_categories (
     FOREIGN KEY (id_category) REFERENCES categories(id) ON DELETE CASCADE
 );
 
+CREATE TABLE categories_level (
+    id_cat VARCHAR(50),
+    level TINYINT NOT NULL CHECK (level BETWEEN 1 AND 10),
+    FOREIGN KEY (id_cat) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cat_hierarchy (
+    id_cat_parent vARCHAR(50),
+    id_cat_child VARCHAR(50),
+    FOREIGN KEY (id_cat_parent) REFERENCES categories(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_cat_child) REFERENCES categories(id) ON DELETE CASCADE
+);
+
 SELECT * FROM users;
 SELECT * FROM accounts;
 SELECT * FROM categories;
 SELECT * FROM transactions;
 SELECT * FROM transactions_categories;
+SELECT * FROM categories_level;
 
-INSERT INTO categories(id, id_user, name) VALUES ("blabla", "user_676c51f37b3b1", "Test1");
-INSERT INTO categories(id, id_user, name) VALUES ("blabla3", "user_676c51f37b3b1", "Test2");
+INSERT INTO categories(id, id_account, name) VALUES ("blabla", "account_677000c130801", "Test1");
+INSERT INTO categories(id, id_account, name) VALUES ("blabla3", "account_677000c130801", "Test2");
 
-DELETE FROM categories WHERE name="other";
+INSERT INTO categories_level(id_cat, level) VALUES ("blabla", 1);
+INSERT INTO categories_level(id_cat, level) VALUES ("blabla3", 2);
+

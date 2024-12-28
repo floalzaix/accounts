@@ -3,10 +3,10 @@
 namespace Models;
 
 use Models\Transaction;
-use Models\TransactionCategories;
+use Models\TransactionCategoriesDAO;
 use Exception;
 
-class TransactionDAO extends TransactionCategories {
+class TransactionDAO extends TransactionCategoriesDAO {
     public function getAllOfAccount(string $id_account) : array {
         $transactions = [];
 

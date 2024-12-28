@@ -23,12 +23,14 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account]);
                     for($i = 1; $i <= $nb_of_categories; $i++) {
                         $cat_selected = $transaction->getCategories()[$i-1];
                         echo "<select id='cat_{$i}' name='cat_{$i}'>";
-                            echo "<option value='other'>Autre</option>";
+                            echo "<option value=''>Aucune</option>";
                             foreach($categories as $cat) {
-                                if ($cat == $cat_selected) {
-                                    echo "<option value='{$cat->getId()}' selected>".$cat->getName()."</option>";
-                                } else {
-                                    echo "<option value='{$cat->getId()}'>".$cat->getName()."</option>";
+                                if ($cat->getLevel() == $i) {
+                                    if ($cat == $cat_selected) {
+                                        echo "<option value='{$cat->getId()}' selected>".$cat->getName()."</option>";
+                                    } else {
+                                        echo "<option value='{$cat->getId()}'>".$cat->getName()."</option>";
+                                    }
                                 }
                             }
                         echo "</select>";
@@ -45,9 +47,11 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account]);
                 <?php
                     for($i = 1; $i <= $nb_of_categories; $i++) {
                         echo "<select id='cat_{$i}' name='cat_{$i}'>";
-                            echo "<option value='other'>Autre</option>";
+                            echo "<option value=''>Aucune</option>";
                             foreach($categories as $cat) {
-                                echo "<option value='{$cat->getId()}'>".$cat->getName()."</option>";
+                                if ($cat->getLevel() == $i) {
+                                    echo "<option value='{$cat->getId()}'>".$cat->getName()."</option>";
+                                }
                             }
                         echo "</select>";
                     }

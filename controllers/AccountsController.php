@@ -23,9 +23,6 @@ class AccountsController {
         $this->account_dao = new AccountDAO();
         $this->transaction_dao = new TransactionDAO();
         $this->category_dao = new CategoryDAO();
-        $other = new Category("Autres", "all");
-        $other->setId("other");
-        $this->category_dao->create($other);
     }
 
     public function displayAddAccount($params = []) : void {

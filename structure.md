@@ -99,7 +99,7 @@
                 }
                 categories {
                     VARCHAR(50) id PK
-                    VARCHAR(50) id_user FK
+                    VARCHAR(50) id_account FK
                     VARCHAR(50) name "NOT NULL"
                 }
                 transactions_categories {
@@ -135,3 +135,18 @@
 
      * [ ] A input method for each level of categorie (For instance, a subcategory is a level 2 category)
      * [ ] A graph feedback to see in form of a chart the categories => Maybe *mermaid*
+     * [ ] Handle the DB part.
+
+    > The DB Scheme for the categories
+
+    ```mermaid
+            erDiagram
+                categories_level {
+                    VARCHAR(50) id_cat FK
+                    TINYINT level "NOT NULL CHECK (level BETWEEN 0 AND 10)"
+                }
+                cat_hierarchy {
+                    VARCHAR(50) id_cat_parent FK
+                    VARCHAR(50) id_cat_child FK
+                }
+    ```

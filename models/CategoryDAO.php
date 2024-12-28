@@ -4,18 +4,17 @@ namespace Models;
 
 use Exception;
 use PDO;
-use Models\BasePDODAO;
+use Models\CategoryLevelDAO;
 
-class CategoryDAO extends BasePDODAO {
+class CategoryDAO extends CategoryLevelDAO {
     public function getAllOfAccount(string $id_account) : array {
         $categories = [];
 
         $sql = "
-            SELECT c.id, c.name, c.id_user 
-            FROM categories c
-            INNER JOIN accounts a ON a.id_user=c.id_user
-            WHERE a.id=:id_account 
-            ORDER BY c.name
+            SELECT *
+            FROM categories 
+            WHERE id_account=:id_account 
+            ORDER BY name
         ";
         $query = $this->execRequest($sql, ["id_account" => $id_account]);
 
@@ -24,8 +23,10 @@ class CategoryDAO extends BasePDODAO {
         }
 
         foreach($query as $row) {
-            $category = new Category($row["name"], $row["id_user"]);
+            $category = new Category($row["name"], $row["id_account"]);
             $category->setId($row["id"]);
+            $level = $this->getLevelOfCategory($row["id"]);
+            $category->setLevel($level);
 
             $categories[] = $category;
         }
@@ -47,31 +48,26 @@ class CategoryDAO extends BasePDODAO {
 
         if ($query->rowCount() == 1) {
             $row = $query->fetch();
-            $category = new Category($row["name"], $row["id_user"]);
+            $category = new Category($row["name"], $row["id_account"]);
             $category->setId($row["id"]);
+            $level = $this->getLevelOfCategory($row["id"]);
+            $category->setLevel($level);
         }
 
         return $category;
     }
 
     public function create(Category $category) : void {
-        $sql = "INSERT INTO categories(id, id_user, name) VALUES (:id, :id_user, :name)";
+        $sql = "INSERT INTO categories(id, id_account, name) VALUES (:id, :id_account, :name)";
         if ($this->getById($category->getId()) != null) {
-            $sql = "UPDATE categories SET name=:name, id_user=:id_user WHERE id=:id";
+            $sql = "UPDATE categories SET name=:name, id_account=:id_account WHERE id=:id";
         }
-        $query = $this->execRequest($sql, ["id" => $category->getId(), "id_user" => $category->getIdUser(), "name" => $category->getName()]);
+        $query = $this->execRequest($sql, ["id" => $category->getId(), "id_account" => $category->getIdAccount(), "name" => $category->getName()]);
+
+        $this->setLevelOfCategory($category->getId(), $category->getLevel());
 
         if ($query == false) {
             throw new Exception("Erreur lors de la création d'une catégorie en base de donnée.");
-        }
-    }
-
-    public function delete(string $id) : void {
-        $sql = "DELETE FROM categories WHERE id=:id";
-        $query = $this->execRequest($sql, ["id" => $id]);
-
-        if ($query == false) {
-            throw new Exception("Erreur lors de la suppression d'une catégorie en base de donnée.");
         }
     }
 }
