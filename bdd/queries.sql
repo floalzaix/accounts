@@ -47,8 +47,17 @@ CREATE TABLE categories (
 CREATE TABLE transactions_categories (
     id_transaction VARCHAR(50),
     id_category VARCHAR(50),
-    FOREIGN KEY (id_transaction) REFERENCES transactions(id),
-    FOREIGN KEY (id_category) REFERENCES categories(id)
+    FOREIGN KEY (id_transaction) REFERENCES transactions(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_category) REFERENCES categories(id) ON DELETE CASCADE
 );
 
+SELECT * FROM users;
 SELECT * FROM accounts;
+SELECT * FROM categories;
+SELECT * FROM transactions;
+SELECT * FROM transactions_categories;
+
+INSERT INTO categories(id, id_user, name) VALUES ("blabla", "user_676c51f37b3b1", "Test1");
+INSERT INTO categories(id, id_user, name) VALUES ("blabla3", "user_676c51f37b3b1", "Test2");
+
+DELETE FROM categories WHERE name="other";

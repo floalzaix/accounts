@@ -66,7 +66,18 @@ class Router {
             } elseif ($action == "inputs") {
                 $route = $this->route_list["inputs"];
                 $post["id_account"] = $get["id"] ?? "";
-            }        } 
+            } elseif ($action == "del-transaction") {
+                $route = $this->route_list["inputs"];
+                $post["id_account"] = $get["id"] ?? "";
+                $post["id_transaction"] = $get["id_transaction"] ?? "";
+                $post["del_transaction"] = true;
+            } elseif ($action == "edit-transaction") {
+                $route = $this->route_list["inputs"];
+                $post["id_account"] = $get["id"] ?? "";
+                $post["id_transaction"] = $get["id_transaction"] ?? "";
+                $post["edit_transaction"] = true;
+            }
+        } 
         $route->action($post, $method);
     } 
 }

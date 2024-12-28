@@ -2,30 +2,31 @@
 
 namespace Models;
 
-use Models\BasePDODAO;
 use Models\Transaction;
+use Models\TransactionCategories;
 use Exception;
 
-class TransactionDAO extends BasePDODAO {
+class TransactionDAO extends TransactionCategories {
     public function getAllOfAccount(string $id_account) : array {
         $transactions = [];
 
         $sql = "
-            SELECT * FROM transactions t 
-            INNER JOIN transactions_categories tc ON tc.id_transaction=t.id
-            INNER JOIN categories c ON c.id=tc.id_category
+            SELECT t.id, t.id_account, t.date, t.title, t.bank_date, t.amount
+            FROM transactions t 
             WHERE t.id_account=:id_account
             ORDER BY date;
         ";
-        $query = $this->execRequest($sql, ["id_account" => $id_account]);
+        $query = $this->execRequest($sql, params: ["id_account" => $id_account]);
 
         if ($query == false) {
             throw new Exception("Erreur lors de la récupération de toutes les transactions en base de donnée.");
         }
 
         foreach($query as $row) {
-            $transaction = new Transaction($row["id_account"], $row["name"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
+            $transaction = new Transaction($row["id_account"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
             $transaction->setId($row["id"]);
+            $categories = $this->getCategoriesOfTransaction($row["id"]);
+            $transaction->setCategories($categories);    
 
             $transactions[] = $transaction;
         }
@@ -47,17 +48,19 @@ class TransactionDAO extends BasePDODAO {
 
         if ($query->rowCount() == 1) {
             $row = $query->fetch();
-            $transaction = new Transaction($row["id_account"], $row["name"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
+            $transaction = new Transaction($row["id_account"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
             $transaction->setId($row["id"]);
+            $categories = $this->getCategoriesOfTransaction($id);
+            $transaction->setCategories($categories);
         }
 
         return $transaction;
     }
 
     public function create(Transaction $transaction) : void {
-        $sql = "INSERT INTO transactions(id, id_account, name, date, title, bank_date, amount) VALUES(:id, :id_account, :name, :date, :title, :bank_date, :amount)";
+        $sql = "INSERT INTO transactions(id, id_account, date, title, bank_date, amount) VALUES(:id, :id_account, :date, :title, :bank_date, :amount)";
         if ($this->getById($transaction->getId()) != null) {
-            $sql = "UPDATE transactions SET id_account=:id_account, name=:name, date=:date, title=:title, bank_date=:bank_date, amount=:amount WHERE id=:id";
+            $sql = "UPDATE transactions SET id_account=:id_account, date=:date, title=:title, bank_date=:bank_date, amount=:amount WHERE id=:id";
         }
 
         $query = $this->execRequest($sql, [
@@ -68,6 +71,8 @@ class TransactionDAO extends BasePDODAO {
             "bank_date" => $transaction->getBankDate(),
             "amount" => $transaction->getAmount()
         ]);
+        
+        $this->setCategoriesOfTransaction($transaction->getId(), $transaction->getCategories());
 
         if ($query == false) {
             throw new Exception("Erreur lors de la création d'une transaction en base de donnée.");

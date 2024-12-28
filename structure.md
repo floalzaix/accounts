@@ -70,8 +70,8 @@
 
     #### Features
 
-     * [ ] A field for the name of the account
-     * [ ] A field for the level of categories
+     * [x] A field for the name of the account
+     * [x] A field for the level of categories
      * [x] Link with the database DAO objects
 
     > The DB Scheme :
@@ -117,6 +117,7 @@
     #### Features
 
      * [ ] Home Page with the account list *page*
+     * [ ] A category *page*
      * [ ] A *view* which can be parameterized to 
        * [ ] add data
        * [ ] remove data

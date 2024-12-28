@@ -13,8 +13,10 @@
             <a href="index.php?action=add-account">+</a>
             <a href="index.php?action=deco">Quit</a>
 
-            <a href="index.php?action=input">Données</a>
-            <a href="index.php?action=summary">Récap</a>
+            <nav class="side_nav">
+                <a href="index.php?action=inputs&id=<?= $id_account ?>">Données</a>
+                <a href="index.php?action=summary&id=<?= $id_account ?>">Récap</a>
+            </nav>
 
             <?= $this->section('content') ?>
         </main>

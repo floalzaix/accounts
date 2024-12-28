@@ -3,6 +3,7 @@
 namespace Models;
 
 use Exception;
+use PDO;
 use Models\BasePDODAO;
 
 class CategoryDAO extends BasePDODAO {
@@ -10,12 +11,11 @@ class CategoryDAO extends BasePDODAO {
         $categories = [];
 
         $sql = "
-            SELECT * 
+            SELECT c.id, c.name, c.id_user 
             FROM categories c
-            INNER JOIN transactions_categories tc ON tc.id_category = c.id
-            INNER JOIN transactions t ON t.id = tc.id_transaction
-            WHERE t.id_account=:id_account 
-            ORDER BY name
+            INNER JOIN accounts a ON a.id_user=c.id_user
+            WHERE a.id=:id_account 
+            ORDER BY c.name
         ";
         $query = $this->execRequest($sql, ["id_account" => $id_account]);
 
@@ -55,11 +55,11 @@ class CategoryDAO extends BasePDODAO {
     }
 
     public function create(Category $category) : void {
-        $sql = "INSERT INTO categories(id, name) VALUES (:id, :name)";
+        $sql = "INSERT INTO categories(id, id_user, name) VALUES (:id, :id_user, :name)";
         if ($this->getById($category->getId()) != null) {
-            $sql = "UPDATE categories SET name=:name WHERE id=:id";
+            $sql = "UPDATE categories SET name=:name, id_user=:id_user WHERE id=:id";
         }
-        $query = $this->execRequest($sql, ["id" => $category->getId(), "name" => $category->getName()]);
+        $query = $this->execRequest($sql, ["id" => $category->getId(), "id_user" => $category->getIdUser(), "name" => $category->getName()]);
 
         if ($query == false) {
             throw new Exception("Erreur lors de la création d'une catégorie en base de donnée.");
