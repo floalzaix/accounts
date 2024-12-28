@@ -2,11 +2,10 @@
 
 namespace Models;
 
-use Models\BasePDODAO;
 use Models\Category;
 use Exception;
 
-class TransactionCategoriesDAO extends BasePDODAO {
+class TransactionCategoriesDAO extends CategoryLevelDAO {
     protected function getCategoriesOfTransaction(string $id_transaction) : array {
         $categories = [];
 
@@ -24,8 +23,10 @@ class TransactionCategoriesDAO extends BasePDODAO {
         }
 
         foreach($query as $row) {
-            $category = new Category($row["name"], $row["id_user"]);
+            $category = new Category($row["name"], $row["id_account"]);
             $category->setId($row["id"]);
+            $level = $this->getLevelOfCategory($row["id"]);
+            $category->setLevel($level);
 
             $categories[] = $category;
         }

@@ -14,8 +14,9 @@
             <a href="index.php?action=deco">Quit</a>
 
             <nav class="side_nav">
-                <a href="index.php?action=inputs&id=<?= $id_account ?>">Données</a>
                 <a href="index.php?action=summary&id=<?= $id_account ?>">Récap</a>
+                <a href="index.php?action=inputs&id=<?= $id_account ?>">Données</a>
+                <a href="index.php?action=categories&id=<?= $id_account ?>">Catégories</a>
             </nav>
 
             <?= $this->section('content') ?>

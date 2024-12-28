@@ -26,6 +26,8 @@ class CatHierarchy extends CategoryLevelDAO {
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
+            $childs = $this->getChilds($row["id"]);
+            $category->setChilds($childs);
 
             $categories[] = $category;
         }

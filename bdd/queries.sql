@@ -75,7 +75,14 @@ SELECT * FROM categories_level;
 
 INSERT INTO categories(id, id_account, name) VALUES ("blabla", "account_677000c130801", "Test1");
 INSERT INTO categories(id, id_account, name) VALUES ("blabla3", "account_677000c130801", "Test2");
+INSERT INTO categories(id, id_account, name) VALUES ("blabla2", "account_677001023926c", "Test1");
+INSERT INTO categories(id, id_account, name) VALUES ("blabla1", "account_677001023926c", "Test2");
 
+DELETE FROM categories_level;
 INSERT INTO categories_level(id_cat, level) VALUES ("blabla", 1);
 INSERT INTO categories_level(id_cat, level) VALUES ("blabla3", 2);
+INSERT INTO categories_level(id_cat, level) VALUES ("blabla2", 2);
+INSERT INTO categories_level(id_cat, level) VALUES ("blabla1", 1);
+
+INSERT INTO cat_hierarchy(id_cat_parent, id_cat_child) VALUES ("blabla1", "blabla2");
 

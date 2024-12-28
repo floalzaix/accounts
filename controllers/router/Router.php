@@ -10,8 +10,10 @@ use Controllers\Router\Routes\RouteAddAccount;
 use Controllers\Router\Routes\RouteHome;
 use Controllers\Router\Routes\RouteInputs;
 use Controllers\Router\Routes\RouteLogin;
-use Controllers\Router\Routes\RouteError404;
+use Controllers\Router\Routes\RouteError;
 use Controllers\Router\Routes\RouteRegister;
+
+use Exception;
 
 class Router {
     private $ctrl_list;
@@ -35,7 +37,7 @@ class Router {
     private function createRouteList() : void {
         $this->route_list = [
             "login" => new RouteLogin($this->ctrl_list["main"]),
-            "err-404" => new RouteError404($this->ctrl_list["error"]),
+            "err" => new RouteError($this->ctrl_list["error"]),
             "register" => new RouteRegister($this->ctrl_list["main"]),
             "home" => new RouteHome($this->ctrl_list["main"]),
             "add-account" => new RouteAddAccount($this->ctrl_list["accounts"]),
@@ -44,7 +46,7 @@ class Router {
     }
 
     private function getRoute(string $route_name) : Route {
-        $route = $this->route_list["err-404"];
+        $route = $this->route_list["err"];
         if (isset($this->route_list[$route_name])) {
             $route = $this->route_list[$route_name];
         }
@@ -78,7 +80,13 @@ class Router {
                 $post["edit_transaction"] = true;
             }
         } 
-        $route->action($post, $method);
+        try {
+            $route->action($post, $method);
+        } catch (Exception $err) {
+            $route = $this->route_list["err"];
+            $post["500"] = true;
+            $route->action($post, $method);
+        }
     } 
 }
 

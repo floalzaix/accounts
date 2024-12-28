@@ -15,6 +15,10 @@ class ErrorController {
     public function displayError404() : void {
         echo $this->templates->render("err-404", ["title" => Config::get("title")]);
     }
+    
+    public function displayError500() : void {
+        echo $this->templates->render("err-500", ["title" => Config::get("title")]);
+    }
 }
 
 ?>

@@ -2,6 +2,7 @@
 
 $this->layout("template", ["title" => $title, "id_account" => $id_account]);
 
+
 ?>
 
 <div id="body_inputs">
@@ -21,15 +22,18 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account]);
                 <input type="date" id="bank_date" name="bank_date" min="<?= $year ?>-01-01" max="<?= $year ?>-12-31" value="<?= $transaction->getBankDate() ?>" />
                 <?php
                     for($i = 1; $i <= $nb_of_categories; $i++) {
-                        $cat_selected = $transaction->getCategories()[$i-1];
+                        $cat_selected = null;
+                        if (!empty($transaction->getCategories())) {
+                            $cat_selected = $transaction->getCategories()[$i-1];
+                        }
                         echo "<select id='cat_{$i}' name='cat_{$i}'>";
                             echo "<option value=''>Aucune</option>";
                             foreach($categories as $cat) {
                                 if ($cat->getLevel() == $i) {
-                                    if ($cat == $cat_selected) {
-                                        echo "<option value='{$cat->getId()}' selected>".$cat->getName()."</option>";
+                                    if ($cat->getId() == (isset($cat_selected) ? $cat_selected->getId() : "")) {
+                                        echo "<option value='{$cat->getId()}' selected>" . $cat->getName() . "</option>";
                                     } else {
-                                        echo "<option value='{$cat->getId()}'>".$cat->getName()."</option>";
+                                        echo "<option value='{$cat->getId()}'>" . $cat->getName() . "</option>";
                                     }
                                 }
                             }

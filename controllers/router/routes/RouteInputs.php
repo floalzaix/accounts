@@ -42,11 +42,13 @@ class RouteInputs extends Route {
                     $account = $this->controller->getAccount($params["id_account"]);
                     $categories = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
-                        $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}"));
+                        $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
                         if (in_array($category, $categories)) {
                             throw new Exception("Une transaction ne peut pas voir plusieur fois la même catégorie");
                         }
-                        $categories[] = $category;
+                        if ($category != null) {
+                            $categories[] = $category;
+                        }
                     }
                     $this->controller->editTransaction(
                         parent::getParam($params, "id_transaction"),
@@ -61,12 +63,19 @@ class RouteInputs extends Route {
                     $message = "Transaction crée avec succès !";
                     $account = $this->controller->getAccount($params["id_account"]);
                     $categories = [];
+                    $childs = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
-                        $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}"));
+                        $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
                         if (in_array($category, $categories)) {
                             throw new Exception("Une transaction ne peut pas voir plusieur fois la même catégorie");
                         }
-                        $categories[] = $category;
+                        if ($category != null) {
+                            if ($i > 1 && !in_array($category, $childs)) {
+                                throw new Exception("Erreur une des catégorie sélectionnée n'est pas enfant de l'autre !");
+                            }
+                            $childs = $category->getChilds();
+                            $categories[] = $category;
+                        }
                     }
                     $this->controller->createTransaction(
                         parent::getParam($params, "id_account"),

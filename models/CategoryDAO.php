@@ -3,10 +3,8 @@
 namespace Models;
 
 use Exception;
-use PDO;
-use Models\CategoryLevelDAO;
 
-class CategoryDAO extends CategoryLevelDAO {
+class CategoryDAO extends CatHierarchy {
     public function getAllOfAccount(string $id_account) : array {
         $categories = [];
 
@@ -27,6 +25,8 @@ class CategoryDAO extends CategoryLevelDAO {
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
+            $childs = $this->getChilds($row["id"]);
+            $category->setChilds($childs);
 
             $categories[] = $category;
         }
@@ -52,6 +52,8 @@ class CategoryDAO extends CategoryLevelDAO {
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
+            $childs = $this->getChilds($row["id"]);
+            $category->setChilds($childs);
         }
 
         return $category;
@@ -65,6 +67,9 @@ class CategoryDAO extends CategoryLevelDAO {
         $query = $this->execRequest($sql, ["id" => $category->getId(), "id_account" => $category->getIdAccount(), "name" => $category->getName()]);
 
         $this->setLevelOfCategory($category->getId(), $category->getLevel());
+        foreach($category->getChilds() as $child) {
+            $this->addChild($category->getId(), $child->getId());
+        }
 
         if ($query == false) {
             throw new Exception("Erreur lors de la création d'une catégorie en base de donnée.");
