@@ -23,7 +23,7 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account]);
                 <?php
                     for($i = 1; $i <= $nb_of_categories; $i++) {
                         $cat_selected = null;
-                        if (!empty($transaction->getCategories())) {
+                        if (!empty($transaction->getCategories()) && isset($transaction->getCategories()[$i-1])) {
                             $cat_selected = $transaction->getCategories()[$i-1];
                         }
                         echo "<select id='cat_{$i}' name='cat_{$i}'>";

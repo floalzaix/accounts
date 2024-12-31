@@ -12,8 +12,17 @@ class RouteInputs extends Route {
             $error = false;
             try {
                 if (isset($params["del_transaction"]) && $params["del_transaction"]) {
-                    $message = "Transaction suprimé avec succès";
-                    $this->controller->deleteTransaction(parent::getParam($params, "id_transaction"));
+                    $id_account = parent::getParam($params, "id_account");
+                    $id_transaction = parent::getParam($params, "id_transaction");
+                    $message = "
+                        Etes-vous sur de vouloir supprimer cette catégorie ?
+                        <form action='index.php?action=inputs&id={$id_account}' method='POST'>
+                            <input type='submit' id='confirm' name='confirm' value='Confirmer' />
+                            <input type='submit' id='cancel' name='cancel' value='Annuler' />
+                            <input type='hidden' id='del_transaction' name='del_transaction' value='true' />
+                            <input type='hidden' id='id_transaction' name='id_transaction' value='{$id_transaction}' />
+                        </form>
+                    ";
                 }
             } catch (Exception $err) {
                 $error = true;
@@ -37,16 +46,29 @@ class RouteInputs extends Route {
             $message = "";
             $error = false;
             try {
-                if ($params["edit_transaction"] ?? false) {
+                if ($params["del_transaction"] ?? false) {
+                    if (isset($params["confirm"])) {
+                        $message = "Transaction supprimée avec succès !";
+                        $this->controller->deleteTransaction(parent::getParam($params, "id_transaction"));
+                    }
+                } elseif ($params["edit_transaction"] ?? false) {
                     $message = "Transaction modifié avec succès !";
                     $account = $this->controller->getAccount($params["id_account"]);
                     $categories = [];
+                    $childs = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
                         $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
+                        if ($i > 1 && $category != null && (!isset($categories[$i-2]) ? 0 : $categories[$i-2]->getLevel()) != $category->getLevel()-1) {
+                            throw new Exception("Erreur une catégorie sélectionné n'a pas de parent sélectionné !");
+                        }
                         if (in_array($category, $categories)) {
                             throw new Exception("Une transaction ne peut pas voir plusieur fois la même catégorie");
                         }
                         if ($category != null) {
+                            if ($i > 1 && !in_array($category, $childs)) {
+                                throw new Exception("Erreur une des catégorie sélectionnée n'est pas enfant de l'autre !");
+                            }
+                            $childs = $category->getChilds();
                             $categories[] = $category;
                         }
                     }
@@ -66,6 +88,9 @@ class RouteInputs extends Route {
                     $childs = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
                         $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
+                        if ($i > 1 && $category != null && (!isset($categories[$i-2]) ? 0 : $categories[$i-2]->getLevel()) != $category->getLevel()-1) {
+                            throw new Exception("Erreur une catégorie sélectionné n'a pas de parent sélectionné !");
+                        }
                         if (in_array($category, $categories)) {
                             throw new Exception("Une transaction ne peut pas voir plusieur fois la même catégorie");
                         }
