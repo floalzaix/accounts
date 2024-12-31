@@ -25,6 +25,8 @@
     * [ ] An admin acces to manage the users
     * [ ] Mapping of errors with diplaying on the page => modif de la page err404 en error puis param : nbr
     * [ ] Forgotten password
+    * [ ] A display with arrows for the categories
+    * [ ] Optimisation and cleaning of the category system => the category class and DAO
 
 ---
 
@@ -101,6 +103,7 @@
                     VARCHAR(50) id PK
                     VARCHAR(50) id_account FK
                     VARCHAR(50) name "NOT NULL"
+                    VARCHAR(50) id_parent FK
                 }
                 transactions_categories {
                     VARCHAR(50) id_transaction FK 
@@ -133,9 +136,9 @@
 
     #### Features
 
-     * [ ] A input method for each level of categorie (For instance, a subcategory is a level 2 category)
-     * [ ] A graph feedback to see in form of a chart the categories => Maybe *mermaid*
-     * [ ] Handle the DB part.
+     * [x] A input method for each level of categorie (For instance, a subcategory is a level 2 category)
+     * [x] A graph feedback to see in form of a chart the categories => Maybe *mermaid*
+     * [x] Handle the DB part.
 
     > The DB Scheme for the categories
 

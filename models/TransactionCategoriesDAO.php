@@ -23,7 +23,7 @@ class TransactionCategoriesDAO extends CategoryLevelDAO {
         }
 
         foreach($query as $row) {
-            $category = new Category($row["name"], $row["id_account"]);
+            $category = new Category($row["name"], $row["id_account"], $row["id_parent"]);
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);

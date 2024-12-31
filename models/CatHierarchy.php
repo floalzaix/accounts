@@ -22,7 +22,7 @@ class CatHierarchy extends CategoryLevelDAO {
         }
 
         foreach($query as $row) {
-            $category = new Category($row["name"], $row["id_account"]);
+            $category = new Category($row["name"], $row["id_account"], $row["id_parent"]);
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
@@ -35,12 +35,23 @@ class CatHierarchy extends CategoryLevelDAO {
         return $categories;
     }
 
-    protected function addChild($id_cat_parent, $id_cat_child) : void {
-        $sql = "INSERT INTO cat_hierarchy(id_cat_parent, id_cat_child) VALUES (:id_cat_parent, :id_cat_child)";
+    public function addChild($id_cat_parent, $id_cat_child) : void {
+        if (!($id_cat_parent == "" || $id_cat_child == "")) {
+            $sql = "INSERT INTO cat_hierarchy(id_cat_parent, id_cat_child) VALUES (:id_cat_parent, :id_cat_child)";
+            $query = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
+
+            if (!$query) {
+                throw new Exception("Erreur lors de l'ajout d'un enfant à une catégorie parent en base de donnée !");
+            }
+        } 
+    }
+
+    public function removeChild(string $id_cat_parent, string $id_cat_child) : void {
+        $sql = "DELETE FROM cat_hierarchy WHERE id_cat_parent=:id_cat_parent AND id_cat_child=:id_cat_child";
         $query = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
 
-        if (!$query) {
-            throw new Exception("Erreur lors de l'ajout d'un enfant à une catégorie parent en base de donnée !");
+        if(!$query) {
+            throw new Exception("Erreur lors de la supression d'une catégorie enfant d'une catégorie parent !");
         }
     }
 

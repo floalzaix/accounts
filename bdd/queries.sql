@@ -43,7 +43,9 @@ CREATE TABLE categories (
     id VARCHAR(50),
     id_account VARCHAR(50),
     name VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id)
+    id_parent VARCHAR(50) NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_parent) REFERENCES categories(id) ON DELETE CASCADE
 );
 
 CREATE TABLE transactions_categories (
@@ -73,16 +75,5 @@ SELECT * FROM transactions;
 SELECT * FROM transactions_categories;
 SELECT * FROM categories_level;
 
-INSERT INTO categories(id, id_account, name) VALUES ("blabla", "account_677000c130801", "Test1");
-INSERT INTO categories(id, id_account, name) VALUES ("blabla3", "account_677000c130801", "Test2");
-INSERT INTO categories(id, id_account, name) VALUES ("blabla2", "account_677001023926c", "Test1");
-INSERT INTO categories(id, id_account, name) VALUES ("blabla1", "account_677001023926c", "Test2");
-
-DELETE FROM categories_level;
-INSERT INTO categories_level(id_cat, level) VALUES ("blabla", 1);
-INSERT INTO categories_level(id_cat, level) VALUES ("blabla3", 2);
-INSERT INTO categories_level(id_cat, level) VALUES ("blabla2", 2);
-INSERT INTO categories_level(id_cat, level) VALUES ("blabla1", 1);
-
-INSERT INTO cat_hierarchy(id_cat_parent, id_cat_child) VALUES ("blabla1", "blabla2");
+DELETE FROM categories;
 

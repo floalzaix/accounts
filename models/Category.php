@@ -10,11 +10,15 @@ class Category {
     private string $name;
     private int $level;
     private array $childs;
+    private ?string $id_parent;
 
-    public function __construct(string $name, string $id_account) {
+    private bool $displayed = false;
+
+    public function __construct(string $name, string $id_account, ?string $id_parent) {
         $this->createId();
         $this->id_account = $id_account;
         $this->name = $name;
+        $this->id_parent = $id_parent;
     }
 
     /**
@@ -24,6 +28,21 @@ class Category {
      */
     private function createId() : void {
         $this->id = uniqid("category_");
+    }
+
+    public function __toString() : string {
+        if (!$this->displayed) {
+            echo "<div class='category'>";
+            echo "<div class='category_name'>".$this->getName()."</div>";
+            echo "<a href='index.php?action=edit-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>Modifier</a>";
+            echo "<a href='index.php?action=del-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>Supprimer</a>";
+            foreach($this->getChilds() as $child) {
+                $child->__toString();
+            }
+            echo "</div>";
+            $this->displayed = true;
+        }
+        return "This is the display of a category : ".$this->getName();
     }
 
     //Getters
@@ -41,6 +60,9 @@ class Category {
     }
     public function getChilds() : array {
         return $this->childs;
+    }
+    public function getIdParent() : ?string {
+        return $this->id_parent;
     }
 
     //Setters
@@ -63,6 +85,9 @@ class Category {
             }
         }
         $this->childs = $childs;
+    }
+    public function setIdParent(?string $id_parent) : void {
+        $this->id_parent = $id_parent;
     }
 }
 

@@ -2,11 +2,13 @@
 
 namespace Controllers\Router;
 
+use Controllers\CategoryController;
 use Controllers\MainController;
 use Controllers\ErrorController;
 use Controllers\AccountsController;
 
 use Controllers\Router\Routes\RouteAddAccount;
+use Controllers\Router\Routes\RouteCategories;
 use Controllers\Router\Routes\RouteHome;
 use Controllers\Router\Routes\RouteInputs;
 use Controllers\Router\Routes\RouteLogin;
@@ -30,7 +32,8 @@ class Router {
         $this->ctrl_list = [
             "main" => new MainController(),
             "error" => new ErrorController(),
-            "accounts" => new AccountsController()
+            "accounts" => new AccountsController(),
+            "category" => new CategoryController()
         ];
     }
 
@@ -41,7 +44,8 @@ class Router {
             "register" => new RouteRegister($this->ctrl_list["main"]),
             "home" => new RouteHome($this->ctrl_list["main"]),
             "add-account" => new RouteAddAccount($this->ctrl_list["accounts"]),
-            "inputs" => new RouteInputs($this->ctrl_list["accounts"])
+            "inputs" => new RouteInputs($this->ctrl_list["accounts"]),
+            "categories" => new RouteCategories(($this->ctrl_list["category"]))
         ];
     }
 
@@ -68,6 +72,9 @@ class Router {
             } elseif ($action == "inputs") {
                 $route = $this->route_list["inputs"];
                 $post["id_account"] = $get["id"] ?? "";
+            } elseif ($action == "categories") {
+                $route = $this->route_list["categories"];
+                $post["id_account"] = $get["id"] ?? "";
             } elseif ($action == "del-transaction") {
                 $route = $this->route_list["inputs"];
                 $post["id_account"] = $get["id"] ?? "";
@@ -78,6 +85,16 @@ class Router {
                 $post["id_account"] = $get["id"] ?? "";
                 $post["id_transaction"] = $get["id_transaction"] ?? "";
                 $post["edit_transaction"] = true;
+            } elseif ($action == "del-category") {
+                $route = $this->route_list["categories"];
+                $post["id_account"] = $get["id"] ?? "";
+                $post["id_cat"] = $get["id_cat"] ?? "";
+                $post["del_category"] = true;
+            } elseif ($action == "edit-category") {
+                $route = $this->route_list["categories"];
+                $post["id_account"] = $get["id"] ?? "";
+                $post["id_cat"] = $get["id_cat"] ?? "";
+                $post["edit_category"] = true;
             }
         } 
         try {
@@ -86,6 +103,7 @@ class Router {
             $route = $this->route_list["err"];
             $post["500"] = true;
             $route->action($post, $method);
+            var_dump($err->getMessage());
         }
     } 
 }

@@ -21,7 +21,7 @@ class CategoryDAO extends CatHierarchy {
         }
 
         foreach($query as $row) {
-            $category = new Category($row["name"], $row["id_account"]);
+            $category = new Category($row["name"], $row["id_account"], $row["id_parent"]);
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
@@ -48,7 +48,7 @@ class CategoryDAO extends CatHierarchy {
 
         if ($query->rowCount() == 1) {
             $row = $query->fetch();
-            $category = new Category($row["name"], $row["id_account"]);
+            $category = new Category($row["name"], $row["id_account"], $row["id_parent"]);
             $category->setId($row["id"]);
             $level = $this->getLevelOfCategory($row["id"]);
             $category->setLevel($level);
@@ -60,11 +60,11 @@ class CategoryDAO extends CatHierarchy {
     }
 
     public function create(Category $category) : void {
-        $sql = "INSERT INTO categories(id, id_account, name) VALUES (:id, :id_account, :name)";
+        $sql = "INSERT INTO categories(id, id_account, name, id_parent) VALUES (:id, :id_account, :name, :id_parent)";
         if ($this->getById($category->getId()) != null) {
-            $sql = "UPDATE categories SET name=:name, id_account=:id_account WHERE id=:id";
+            $sql = "UPDATE categories SET name=:name, id_account=:id_account, id_parent=:id_parent WHERE id=:id";
         }
-        $query = $this->execRequest($sql, ["id" => $category->getId(), "id_account" => $category->getIdAccount(), "name" => $category->getName()]);
+        $query = $this->execRequest($sql, ["id" => $category->getId(), "id_account" => $category->getIdAccount(), "name" => $category->getName(), "id_parent" => $category->getIdParent()]);
 
         $this->setLevelOfCategory($category->getId(), $category->getLevel());
         foreach($category->getChilds() as $child) {
