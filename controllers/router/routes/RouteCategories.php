@@ -8,8 +8,8 @@ use Exception;
 class RouteCategories extends Route {
     protected function get($params = []) : void {
         if ($this->controller->connected()) {
-            $message = "";
-            $error = false;
+            $message = $params["message"] ?? "";
+            $error = $params["error"] ?? false;
             try {
                 if ($params["del_category"] ?? false) {
                     $id_account = parent::getParam($params, "id_account");
@@ -45,7 +45,9 @@ class RouteCategories extends Route {
         if ($this->controller->connected()) {
             $message = "";
             $error = false;
+            $id_account = "";
             try {
+                $id_account = parent::getParam($params, "id_account");
                 if (($params["del_category"] ?? false)) {
                     if (isset($params["confirm"])) {
                         $message = "Catégorie supprimée avec succès !";
@@ -56,8 +58,8 @@ class RouteCategories extends Route {
                     $level_parent = $this->controller->getLevelOfCategory(parent::getParam($params, "parent", true));
                     $this->controller->editCategory(
                         parent::getParam($params, "id_cat"),
-                        parent::getParam($params, "id_account"),
                         parent::getParam($params, "name"),
+                        $id_account,
                         $level_parent+1,
                         parent::getParam($params, "parent", true)
                     );
@@ -65,7 +67,7 @@ class RouteCategories extends Route {
                     $message = "Catégorie ajouté avec succés !";
                     $level_parent = $this->controller->getLevelOfCategory(parent::getParam($params, "parent", true));
                     $this->controller->createCategory(
-                        parent::getParam($params, "id_account"),
+                        $id_account,
                         parent::getParam($params, "name"),
                         $level_parent+1,
                         parent::getParam($params, "parent", true)
@@ -76,10 +78,12 @@ class RouteCategories extends Route {
     	        $message = $err->getMessage();
             }
             $this->controller->displayCategories([
-                "id_account" => parent::getParam($params, "id_account"),
+                "id_account" => $id_account,
                 "message" => $message,
                 "error" => $error,
             ]);
+
+            echo "<meta http-equiv='refresh' content='0; url=index.php?action=categories&id={$id_account}&message={$message}&error={$error}' />";
         } else {
             header("Location: index.php?action=login");
             exit();

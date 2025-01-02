@@ -77,3 +77,11 @@ SELECT * FROM categories_level;
 
 DELETE FROM categories;
 
+SELECT table_name AS "Table",
+       ROUND((data_length + index_length) / 1024 / 1024, 10) AS "Taille (MB)"
+FROM information_schema.tables
+WHERE table_schema = 'accounts';
+
+FLUSH TABLES;
+COMMIT;
+

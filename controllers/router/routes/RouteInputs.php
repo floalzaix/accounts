@@ -8,8 +8,8 @@ use Exception;
 class RouteInputs extends Route {
     protected function get($params = []) : void {
         if ($this->controller->connected()) {
-            $message = "";
-            $error = false;
+            $message = $params["message"] ?? "";
+            $error = $params["error"] ?? false;
             try {
                 if (isset($params["del_transaction"]) && $params["del_transaction"]) {
                     $id_account = parent::getParam($params, "id_account");
@@ -45,7 +45,9 @@ class RouteInputs extends Route {
         if ($this->controller->connected()) {
             $message = "";
             $error = false;
+            $id_account = "";
             try {
+                $id_account = parent::getParam($params, "id_account");
                 if ($params["del_transaction"] ?? false) {
                     if (isset($params["confirm"])) {
                         $message = "Transaction supprimée avec succès !";
@@ -58,6 +60,9 @@ class RouteInputs extends Route {
                     $childs = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
                         $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
+                        if ($category == null && $i == 1) {
+                            throw new Exception("Une transaction ne peut ne pas avoir de catégorie racine");
+                        }
                         if ($i > 1 && $category != null && (!isset($categories[$i-2]) ? 0 : $categories[$i-2]->getLevel()) != $category->getLevel()-1) {
                             throw new Exception("Erreur une catégorie sélectionné n'a pas de parent sélectionné !");
                         }
@@ -74,7 +79,7 @@ class RouteInputs extends Route {
                     }
                     $this->controller->editTransaction(
                         parent::getParam($params, "id_transaction"),
-                        parent::getParam($params, "id_account"),
+                        $id_account,
                         parent::getParam($params, "date"),
                         parent::getParam($params, "title"),
                         parent::getParam($params, "bank_date"),
@@ -88,6 +93,9 @@ class RouteInputs extends Route {
                     $childs = [];
                     for ($i = 1; $i <= $account->getNbOfCategories(); $i++) {
                         $category = $this->controller->getCategory(parent::getParam($params, "cat_{$i}", true));
+                        if ($category == null && $i == 1) {
+                            throw new Exception("Une transaction ne peut ne pas avoir de catégorie racine");
+                        }
                         if ($i > 1 && $category != null && (!isset($categories[$i-2]) ? 0 : $categories[$i-2]->getLevel()) != $category->getLevel()-1) {
                             throw new Exception("Erreur une catégorie sélectionné n'a pas de parent sélectionné !");
                         }
@@ -103,7 +111,7 @@ class RouteInputs extends Route {
                         }
                     }
                     $this->controller->createTransaction(
-                        parent::getParam($params, "id_account"),
+                        $id_account,
                         parent::getParam($params, "date"),
                         parent::getParam($params, "title"),
                         parent::getParam($params, "bank_date"),
@@ -116,7 +124,9 @@ class RouteInputs extends Route {
                 $message = $err->getMessage();
             }
             
-            $this->controller->displayInputs(["id_account" => $params["id_account"] ?? "", "message" => $message, "error" => $error]);
+            $this->controller->displayInputs(["id_account" => $id_account, "message" => $message, "error" => $error]);
+
+            echo "<meta http-equiv='refresh' content='0; url=index.php?action=inputs&id={$id_account}&message={$message}&error={$error}' />";
         } else {
             header("Location: index.php?action=login");
             exit();

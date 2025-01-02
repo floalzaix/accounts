@@ -14,6 +14,8 @@ use Controllers\Router\Routes\RouteInputs;
 use Controllers\Router\Routes\RouteLogin;
 use Controllers\Router\Routes\RouteError;
 use Controllers\Router\Routes\RouteRegister;
+use Controllers\Router\Routes\RouteSummary;
+use Controllers\Router\Routes\RouteDetails;
 
 use Exception;
 
@@ -45,7 +47,9 @@ class Router {
             "home" => new RouteHome($this->ctrl_list["main"]),
             "add-account" => new RouteAddAccount($this->ctrl_list["accounts"]),
             "inputs" => new RouteInputs($this->ctrl_list["accounts"]),
-            "categories" => new RouteCategories(($this->ctrl_list["category"]))
+            "categories" => new RouteCategories(($this->ctrl_list["category"])),
+            "summary" => new RouteSummary($this->ctrl_list["accounts"]),
+            "details" => new RouteDetails($this->ctrl_list["accounts"]),
         ];
     }
 
@@ -63,7 +67,9 @@ class Router {
         if (!empty($post)) {
             $method = "POST";
         }
-        $action = $get[$this->action_key];
+        $action = $get[$this->action_key] ?? null;
+        $post["message"] = $get["message"] ?? "";
+        $post["error"] = $get["error"] ?? false;
         if (isset($action)) {
             $route = $this->getRoute($action);
             if ($action == "deco") {
@@ -95,6 +101,15 @@ class Router {
                 $post["id_account"] = $get["id"] ?? "";
                 $post["id_cat"] = $get["id_cat"] ?? "";
                 $post["edit_category"] = true;
+            } elseif ($action == "summary") {
+                $post["id_account"] = $get["id"] ?? "";
+                $post["month"] = $get["month"] ?? "january"; 
+            } elseif ($action == "del-account") {
+                $route = $this->route_list["home"];
+                $post["id_account"] = $get["id"] ?? "";
+                $post["del_account"] = true;
+            } elseif ($action == "details") {
+                $post["id_account"] = $get["id"] ?? "";
             }
         } 
         try {

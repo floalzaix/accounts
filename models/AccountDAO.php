@@ -67,6 +67,78 @@ class AccountDAO extends BasePDODAO {
             throw new Exception("Erreur lors de la suppression d'un compte en base de donnée.");
         }
     }
+
+    public function getExpenses(string $id) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS expenses
+            FROM transactions t
+            INNER JOIN accounts a ON a.id=t.id_account
+            WHERE a.id=:id AND t.amount < 0
+        ";
+        $query = $this->execRequest($sql, ["id" => $id]);
+
+        if ($query == false || $query->rowCount() != 1) {
+            throw new Exception("Erreur lors de la recupération de dépenses en base de donnée.");
+        } 
+
+        $row = $query->fetch();
+
+        return $row["expenses"] ?? 0;
+    }
+
+    public function getRevenues(string $id) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS revenues
+            FROM transactions t
+            INNER JOIN accounts a ON a.id=t.id_account
+            WHERE a.id=:id AND t.amount >= 0
+        ";
+        $query = $this->execRequest($sql, ["id" => $id]);
+
+        if ($query == false || $query->rowCount() != 1) {
+            throw new Exception("Erreur lors de la recupération des recettes en base de donnée.");
+        } 
+
+        $row = $query->fetch();
+
+        return $row["revenues"] ?? 0;
+    }
+
+    public function getMExpenses(string $id, int $month) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS expenses
+            FROM transactions t
+            INNER JOIN accounts a ON a.id=t.id_account
+            WHERE a.id=:id AND t.amount < 0 AND EXTRACT(MONTH FROM t.date)=:month
+        ";
+        $query = $this->execRequest($sql, ["id" => $id, "month" => $month]);
+
+        if ($query == false || $query->rowCount() != 1) {
+            throw new Exception("Erreur lors de la recupération de dépenses par mois en base de donnée.");
+        } 
+
+        $row = $query->fetch();
+
+        return $row["expenses"] ?? 0;
+    }
+
+    public function getMRevenues(string $id, int $month) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS revenues
+            FROM transactions t
+            INNER JOIN accounts a ON a.id=t.id_account
+            WHERE a.id=:id AND t.amount >= 0 AND EXTRACT(MONTH FROM t.date)=:month
+        ";
+        $query = $this->execRequest($sql, ["id" => $id, "month" => $month]);
+    
+        if ($query == false || $query->rowCount() != 1) {
+            throw new Exception("Erreur lors de la recupération des recettes par mois en base de donnée.");
+        } 
+    
+        $row = $query->fetch();
+    
+        return $row["revenues"] ?? 0;
+    }
 }
 
 ?>

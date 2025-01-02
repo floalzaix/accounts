@@ -25,8 +25,26 @@ class MainController {
     public function displayHome($params = []) : void {
         $user = $this->user_dao->getByName($params["user"] ?? (isset($_SESSION["user"]) ? $_SESSION["user"]->getName() : ""));
         $accounts = $this->account_dao->getAllOfUser(isset($user) ? $user->getId() : "");
-        MessageHandler::setMessageToPage($params["message"] ?? "", "login", $params["error"] ?? false);
-        echo $this->templates->render("home", ["title" => Config::get("title"), "user_name" => isset($user) ? $user->getName() : "", "accounts" => $accounts]);
+
+        $expenses = $this->getExpensesOfAllAccounts($user->getId());
+        $revenues = $this->getRevenuesOfAllAccounts($user->getId());
+        $balance = $revenues+$expenses;
+
+        MessageHandler::setMessageToPage($params["message"] ?? "", "home", $params["error"] ?? false);
+        echo $this->templates->render("home", [
+            "title" => Config::get("title"),
+            "user_name" => isset($user) ? $user->getName() : "",
+            "accounts" => $accounts,
+            "expenses" => $expenses,
+            "revenues" => $revenues,
+            "balance" => $balance
+        ]);
+    }
+    public function getExpensesOfAllAccounts(string $id_user) : int {
+        return $this->user_dao->getExpensesOfAllAccounts($id_user);
+    }
+    public function getRevenuesOfAllAccounts(string $id_user) : int {
+        return $this->user_dao->getRevenuesOfAllAccounts($id_user);
     }
 
     public function displayLogin($params = []) : void {
@@ -73,6 +91,10 @@ class MainController {
         session_destroy();
         header("Location: index.php?action=login");
         exit();
+    }
+
+    public function deleteAccount(string $id) : void {
+        $this->account_dao->delete($id);
     }
 }
 

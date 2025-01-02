@@ -31,6 +31,7 @@ class CategoryController {
         echo $this->templates->render("categories", [
             "title" => Config::get("title"),
             "id_account" => $params["id_account"] ?? "",
+            "account_name" => $account->getName(),
             "categories" => $categories,
             "edit_category" => $params["edit_category"] ?? false,
             "nb_of_categories" => $nb_of_categories,

@@ -1,6 +1,6 @@
 <?php
 
-$this->layout("template", ["title" => $title, "id_account" => $id_account]);
+$this->layout("template", ["title" => $title, "id_account" => $id_account, "account_name" => $account_name]);
 
 ?>
 

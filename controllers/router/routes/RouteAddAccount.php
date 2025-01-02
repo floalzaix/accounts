@@ -8,7 +8,10 @@ use Exception;
 class RouteAddAccount extends Route {
     public function get($params = []) : void {
         if ($this->controller->connected()) {
-            $this->controller->displayAddAccount();
+            $this->controller->displayAddAccount([
+                "message" => $params["message"] ?? "",
+                "error" => $params["error"] ?? false
+            ]);
         } else {
             header("Location: index.php?action=login");
             exit();
@@ -26,6 +29,8 @@ class RouteAddAccount extends Route {
                 $message = $err->getMessage();
             }
             $this->controller->displayAddAccount(["message" => $message, "error" => $error]);
+
+            echo "<meta http-equiv='refresh' content='0; url=index.php?action=add-account&message={$message}&error={$error}' />";
         } else {
             header("Location: index.php?action=login");
             exit();

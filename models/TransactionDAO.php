@@ -87,6 +87,133 @@ class TransactionDAO extends TransactionCategoriesDAO {
             throw new Exception("Erreur lors de la suppression d'une transaction en base de donnée.");
         }
     }
+
+    public function getMTopTransactions(string $id, int $limit, int $month) : array {
+        $sql = "
+            SELECT *
+            FROM transactions 
+            WHERE id_account=:id AND EXTRACT(MONTH FROM date)=:month
+            ORDER BY ABS(amount)
+            LIMIT $limit
+        ";
+        $query = $this->execRequest($sql, ["id" => $id, "month" => $month]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la recupération ne base de donnée des top transactions par mois");
+        }
+
+        $top_transactions = [];
+        foreach($query as $row) {
+            $transaction = new Transaction($row["id_account"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
+            $transaction->setId($row["id"]);
+            $categories = $this->getCategoriesOfTransaction($row["id"]);
+            $transaction->setCategories($categories);
+
+            $top_transactions[] = $transaction;
+        }
+
+        return $top_transactions;
+    } 
+
+    public function getBalanceEndMonth(string $id, int $month) : int {
+        $sql = "
+            SELECT SUM(amount) as balance
+            FROM transactions
+            WHERE id_account=:id
+            AND EXTRACT(MONTH FROM date) <= :month
+        ";
+        $query = $this->execRequest($sql, ["id" => $id, "month" => $month]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la récupération du solde à la fin d'un mois en base de donnée !");
+        }
+
+        $row = $query->fetch();
+
+        return $row["balance"] ?? 0;
+    }
+
+    public function getExpensesPerMonthOfCategory(string $id_account, string $id_category, array $months) : array {
+        $sql = "
+            SELECT SUM(t.amount) AS expenses, EXTRACT(MONTH FROM t.date) as month
+            FROM transactions t
+            INNER JOIN transactions_categories tc ON tc.id_transaction = t.id
+            WHERE tc.id_category = :id_category 
+            AND t.id_account = :id_account
+            AND t.amount < 0
+            GROUP BY EXTRACT(MONTH FROM t.date)
+            ORDER BY EXTRACT(MONTH FROM t.date)
+        ";
+        $query = $this->execRequest($sql, [
+            "id_account" => $id_account,
+            "id_category" => $id_category,
+        ]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la récupération en base de donnée des dépenses par mois d'une catégorie");
+        }
+
+        $expenses_per_month = [];
+        foreach($query as $row) {
+            $expenses_per_month[$row["month"]] = $row["expenses"];
+        }
+
+        $S = 0;
+        foreach($expenses_per_month as $expense) {
+            $S+= $expense;
+        }
+
+        foreach($months as $month => $num) {
+            if (!isset($expenses_per_month[$num])) {
+                $expenses_per_month[$num] = 0;
+            }
+        }
+
+        $expenses_per_month["sum"] = $S;
+
+        return $expenses_per_month;
+    }
+
+    public function getRevenuesPerMonthOfCategory(string $id_account, string $id_category, array $months) : array {
+        $sql = "
+            SELECT SUM(t.amount) AS expenses, EXTRACT(MONTH FROM t.date) as month
+            FROM transactions t
+            INNER JOIN transactions_categories tc ON tc.id_transaction = t.id
+            WHERE tc.id_category = :id_category 
+            AND t.id_account = :id_account
+            AND t.amount >= 0
+            GROUP BY EXTRACT(MONTH FROM t.date)
+            ORDER BY EXTRACT(MONTH FROM t.date)
+        ";
+        $query = $this->execRequest($sql, [
+            "id_account" => $id_account,
+            "id_category" => $id_category,
+        ]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la récupération en base de donnée des recettes par mois d'une catégorie");
+        }
+
+        $expenses_per_month = [];
+        foreach($query as $row) {
+            $expenses_per_month[$row["month"]] = $row["expenses"];
+        }
+
+        $S = 0;
+        foreach($expenses_per_month as $expense) {
+            $S+= $expense;
+        }
+
+        foreach($months as $month => $num) {
+            if (!isset($expenses_per_month[$num])) {
+                $expenses_per_month[$num] = 0;
+            }
+        }
+
+        $expenses_per_month["sum"] = $S;
+
+        return $expenses_per_month;
+    }
 }
 
 ?>

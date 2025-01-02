@@ -81,6 +81,46 @@ class UserDAO extends BasePDODAO {
             throw new Exception("Erreur lors de la création d'un utilisateur dans la base de donnée");
         }
     }
+
+    public function getExpensesOfAllAccounts(string $id_user) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS expenses
+            FROM users u
+            INNER JOIN accounts a ON a.id_user=u.id
+            INNER JOIN transactions t ON t.id_account=a.id
+            WHERE u.id=:id_user
+            AND t.amount < 0
+        ";
+        $query = $this->execRequest($sql, ["id_user" => $id_user]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la récupération des dépenses de tous les comptes en base de donnée !");
+        }
+
+        $row = $query->fetch();
+
+        return $row["expenses"];
+    }
+
+    public function getRevenuesOfAllAccounts(string $id_user) : int {
+        $sql = "
+            SELECT SUM(t.amount) AS revenues
+            FROM users u
+            INNER JOIN accounts a ON a.id_user=u.id
+            INNER JOIN transactions t ON t.id_account=a.id
+            WHERE u.id=:id_user
+            AND t.amount >= 0
+        ";
+        $query = $this->execRequest($sql, ["id_user" => $id_user]);
+
+        if (!$query) {
+            throw new Exception("Erreur lors de la récupération des revenues de tous les comptes en base de donnée !");
+        }
+
+        $row = $query->fetch();
+
+        return $row["revenues"];
+    }
 }
 
 ?>

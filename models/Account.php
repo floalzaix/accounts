@@ -26,7 +26,10 @@ class Account {
     }
 
     public function __toString() : string {
-        echo "<a href='index.php?action=inputs&id={$this->getId()}'>{$this->getName()}</a>";
+        echo "<div class='account'>";
+            echo "<a href='index.php?action=inputs&id={$this->getId()}'>{$this->getName()}</a>";
+            echo "<a href='index.php?action=del-account&id={$this->getId()}'>Supprimer</a>";
+        echo "</div>";
         return "This is the display of the accont intitled : ".$this->getName();
     }
 

@@ -5,14 +5,12 @@
     What will the app contain ?
 
    * [x] Login => Password (Encrypted) *Page*
-   * [ ] Create an account *Page*
-   * [ ] Create a savings account *Page*
-   * [ ] Create a bills account *Page*
-   * [ ] To input data in these accounts *Page*
-   * [ ] Category system that will include a tree organisation of the categories
-   * [ ] To have summury feedback (Balance and then per month the revenues and expencies + details if wanted *button detail*) *Page*
-   * [ ] To have a global feedback of all accounts *Page*
-   * [ ] A menu to switch pages
+   * [x] Create an account *Page*
+   * [x] To input data in these accounts *Page*
+   * [x] Category system that will include a tree organisation of the categories
+   * [x] To have summury feedback (Balance and then per month the revenues and expencies + details if wanted *button detail* => *page*) *Page*
+   * [x] To have a global feedback of all accounts *Page*
+   * [x] A menu to switch pages
 
 ---
 
@@ -20,13 +18,17 @@
 
 
     * [ ] To be able to add an account from an Excel container
+    * [ ] Being able to add an account but without categories => a box to tick and then the number of categories wanted 
+    * [ ] To have a field where give a date and it gives back the balance of the account at this date
+    * [ ] Estimation system to predict the balance of the account and the expenses per month
     * [ ] To access directly data of an account through an API
     * [ ] To incorporate AI to help speed things up
     * [ ] An admin acces to manage the users
-    * [ ] Mapping of errors with diplaying on the page => modif de la page err404 en error puis param : nbr
+    * [ ] Mapping of errors with diplaying on the page => modif de la page err404 en error puis param : nbr and also handling when not given an id_account or login so it redirects to the page handling it.
     * [ ] Forgotten password
     * [ ] A display with arrows for the categories
     * [ ] Optimisation and cleaning of the category system => the category class and DAO
+    * [ ] A setting *page* to select the theme and others parametable stuff
 
 ---
 
@@ -119,13 +121,14 @@
 
     #### Features
 
-     * [ ] Home Page with the account list *page*
-     * [ ] A category *page*
-     * [ ] A *view* which can be parameterized to 
-       * [ ] add data
-       * [ ] remove data
-       * [ ] edit data
-       * [ ] summarize data per month and balance
+     * [x] Home Page with the account list *page* 
+     * [x] Button to delete an account
+     * [x] A category *page*
+     * [x] A *view* which can be parameterized to 
+       * [x] add data
+       * [x] remove data
+       * [x] edit data
+       * [x] summarize data per month and balance
      * [ ] A style CSS with the options summary, input on the left
 
 ---
@@ -153,3 +156,17 @@
                     VARCHAR(50) id_cat_child FK
                 }
     ```
+
+---
+
+8. Summary page
+
+    > The goal is to have a global feedback
+
+    #### Features
+
+     * [x] Selection of the month
+     * [x] A current balance
+     * [x] The balance at the end of the month and revenues and expenses of the month
+     * [x] The expenses
+     * [x] The revenues
