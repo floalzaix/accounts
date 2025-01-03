@@ -7,13 +7,20 @@
         <title><?= $this->e($title) ?></title>
     </head>
     <body>
-        <!-- #contenu -->
-        <main id="contenu">
-            <a href="index.php?action=home">Home</a>
-            <a href="index.php?action=add-account">+</a>
-            <a href="index.php?action=deco">Quit</a>
+        <div id="main_home">
+            <nav id="upper_menu">
+                <a href="index.php?action=home">
+                    <img alt="accueil" src="/public/images/icones/accueil.png" />
+                </a>
+                <a id="plus" href="index.php?action=add-account">
+                    <img alt="accueil" src="/public/images/icones/plus.png" />
+                </a>
+                <a href="index.php?action=deco">
+                    <img alt="accueil" src="/public/images/icones/deconnexion.png" />
+                </a>
+            </nav>
 
             <?= $this->section('content') ?>
-        </main>
+        </div>
     </body>
 </html>

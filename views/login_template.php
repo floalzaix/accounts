@@ -7,8 +7,8 @@
         <title><?= $this->e($title) ?></title>
     </head>
     <body>
-        <main id="contenu">
+        <div id="main_login">
             <?= $this->section('content') ?>
-        </main>
+        </div>
     </body>
 </html>

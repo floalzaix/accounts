@@ -18,6 +18,8 @@
 
 
     * [ ] To be able to add an account from an Excel container
+    * [ ] Currency system
+    * [ ] Language system
     * [ ] Being able to add an account but without categories => a box to tick and then the number of categories wanted 
     * [ ] To have a field where give a date and it gives back the balance of the account at this date
     * [ ] Estimation system to predict the balance of the account and the expenses per month

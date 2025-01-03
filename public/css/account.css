@@ -1,0 +1,12 @@
+.account {
+    width: 400px;
+    min-height: 75px;
+
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+
+    background-color: white;
+}

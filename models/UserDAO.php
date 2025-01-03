@@ -99,7 +99,7 @@ class UserDAO extends BasePDODAO {
 
         $row = $query->fetch();
 
-        return $row["expenses"];
+        return $row["expenses"] ?? 0;
     }
 
     public function getRevenuesOfAllAccounts(string $id_user) : int {
@@ -119,7 +119,7 @@ class UserDAO extends BasePDODAO {
 
         $row = $query->fetch();
 
-        return $row["revenues"];
+        return $row["revenues"] ?? 0;
     }
 }
 

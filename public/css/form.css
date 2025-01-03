@@ -1,0 +1,22 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input {
+    all: unset;
+    
+    width: 100%;
+    padding: 2%;
+
+    box-sizing: border-box;
+
+    border-bottom: 2px solid black;
+    font: 0.9em "arial-black", Arial, sans-serif;
+}
+.input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

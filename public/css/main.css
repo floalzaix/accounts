@@ -1,0 +1,120 @@
+@import url("form.css");
+@import url("button.css");
+@import url("nav.css");
+@import url("account.css");
+
+body  {
+    margin: 0%;
+
+    overflow: hidden;
+}
+
+/* Titles */
+h1 {
+    font: bold 2.4em "arial-black", Arial, sans-serif;
+}
+
+/* Icons */
+.icon {
+    width: 30px;
+    height: 30px;
+    /*padding-top: 6px; pour la fin*/
+}   
+
+/* Login page */
+#main_login {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: aliceblue;
+}
+#body_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: white;
+    border-radius: 14px;
+    box-shadow: 0px 0px 7px 2px rgba(0, 0, 175, 0.1);
+}
+#login_links {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Home page */
+#main_home {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    color: white;
+    background: radial-gradient(circle at 100% 50%, rgb(22, 88, 168) 0%, rgb(9, 37, 71) 49%)
+}
+#body_home {
+    width: 100%;
+
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 200px;
+    text-align: center;
+}
+#body_home > .card {
+    width: 200px;
+    height: 200px;
+
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    filter: invert(1);
+    background-image: url("/public/images/icones/carte-de-credit.png");
+    background-size: 200px 200px;
+    font: bold 1.1em "arial-black", Arial, sans-serif;
+}
+#body_home > .card > .amount_title {
+    height: calc(100% - 5px);
+
+    padding-top: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#body_home > .card > .amount {
+    height: calc(100% - 21px);
+    width: calc(100% - 25px);
+    padding-top: 21px;
+    padding-left: 25px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+#body_home > .accounts {
+    height: 100%;
+    
+    grid-column: 2;
+    grid-row: 2 / 5;
+    display: flex;
+    flex-direction: column;
+    justify-self: start;
+    align-self: center;
+    gap: 20px;
+    
+    overflow: auto;
+}
+#home_title {
+    font-size: 3.1rem;
+}

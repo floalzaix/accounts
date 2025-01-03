@@ -74,13 +74,12 @@ class MessageHandler {
     .message {
         width: 100%;
         padding: 26px;
-        margin-bottom: 30px;
 
         display: flex;
         text-align: center;
         justify-content: center;
     
         color: white;
-        font: bold 1.2rem "sytem-ui"; 
+        font: bold 1em "arial-black", Arial, sans-serif;
     }
 </style>
