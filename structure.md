@@ -34,7 +34,8 @@
     * [ ] Optimisation and cleaning of the category system => the category class and DAO
     * [ ] A setting *page* to select the theme and others parametable stuff
     * [ ] A loading page with the shilds for the login
-    * [ ] Stockage des dates au format DateTime
+    * [ ] Storing the date to the DateTime format or not ?
+    * [ ] Encoding the url strings 
 
 ---
 

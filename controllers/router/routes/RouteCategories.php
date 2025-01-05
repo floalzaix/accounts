@@ -58,8 +58,8 @@ class RouteCategories extends Route {
                     $level_parent = $this->controller->getLevelOfCategory(parent::getParam($params, "parent", true));
                     $this->controller->editCategory(
                         parent::getParam($params, "id_cat"),
-                        parent::getParam($params, "name"),
                         $id_account,
+                        parent::getParam($params, "name"),
                         $level_parent+1,
                         parent::getParam($params, "parent", true)
                     );
