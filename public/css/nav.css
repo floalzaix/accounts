@@ -1,5 +1,5 @@
 #upper_menu {
-    position: absolute;
+    position: fixed;
     right: 0px;
     top: 60px;
     padding-right: 35px;

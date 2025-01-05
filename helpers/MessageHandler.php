@@ -76,6 +76,7 @@ class MessageHandler {
         padding: 26px;
 
         display: flex;
+        flex-direction: column;
         text-align: center;
         justify-content: center;
     

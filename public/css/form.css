@@ -3,7 +3,10 @@ form {
     flex-direction: column;
     gap: 20px;
 }
-
+form > img {
+    width: 25px;
+    height: 25px;
+}
 input {
     all: unset;
     

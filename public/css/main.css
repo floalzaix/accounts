@@ -2,11 +2,11 @@
 @import url("button.css");
 @import url("nav.css");
 @import url("account.css");
+@import url("transaction.css");
 
 body  {
     margin: 0%;
 
-    overflow: hidden;
 }
 
 /* Titles */
@@ -19,9 +19,23 @@ h1 {
     width: 30px;
     height: 30px;
     /*padding-top: 6px; pour la fin*/
-}   
+}
 
-/* Login page */
+/* Amounts */
+#balance {
+    filter: invert(1);
+    color: deepskyblue;
+}
+#revenues {
+    filter: invert(1);
+    color: green;
+}
+#expenses {
+    filter: invert(1);
+    color: red;
+}
+
+/* Login and register pages */
 #main_login {
     height: 100%;
 
@@ -33,6 +47,8 @@ h1 {
     background-color: aliceblue;
 }
 #body_login {
+    padding: 3%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,9 +60,15 @@ h1 {
 #login_links {
     width: 100%;
 
+    margin-top: 10%;
+
     display: flex;
-    justify-content: center;
+    justify-content: center;    
     gap: 5px;
+    box-sizing: border-box;
+}
+#body_login > h1 {
+    color: rgb(60, 71, 77);
 }
 
 /* Home page */
@@ -58,7 +80,8 @@ h1 {
     align-items: center;
     
     color: white;
-    background: radial-gradient(circle at 100% 50%, rgb(22, 88, 168) 0%, rgb(9, 37, 71) 49%)
+    background: radial-gradient(circle at 100% 50%, rgb(22, 88, 168) 10%, rgb(9, 37, 71) 45%);
+    overflow: hidden;
 }
 #body_home {
     width: 100%;
@@ -104,9 +127,10 @@ h1 {
 }
 #body_home > .accounts {
     height: 100%;
+    width: 100%;
     
     grid-column: 2;
-    grid-row: 2 / 5;
+    grid-row: 2 / 4;
     display: flex;
     flex-direction: column;
     justify-self: start;
@@ -116,5 +140,21 @@ h1 {
     overflow: auto;
 }
 #home_title {
-    font-size: 3.1rem;
+    font-size: 3.2rem;
+}
+#body_home > .message {
+    align-self: center;
+    justify-content: start;
+}
+
+/* Inputs page */
+#main_account {
+}
+#body_inputs {
+}
+.transactions {
+    display: flex;
+    flex-direction: column;
+}
+#body_inputs > form {
 }

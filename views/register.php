@@ -28,7 +28,7 @@
 
     <div id="login_links">
         <a href="index.php?action=login" class="button">CONNEXION</a>
-        <a href="index.php?action=recovery" class="button" id="forgotten">MOT DE PASSE OUBLIE</a>
+        <a href="index.php?action=recovery" class="button" id="empty">MOT DE PASSE OUBLIE</a>
     </div>
 
     <?= MessageHandler::displayMessage("register"); ?>

@@ -2,6 +2,9 @@
 
 namespace Models;
 
+use IntlDateFormatter;
+use DateTime;
+
 class Transaction {
     private string $id;
     private string $id_account;
@@ -29,17 +32,40 @@ class Transaction {
         $this->id = uniqid("transaction_");
     }
 
+    private function formatDate(string $date, $localisation="fr_FR") : string {
+        $formatter = new IntlDateFormatter(
+            $localisation,
+            IntlDateFormatter::SHORT,
+            IntlDateFormatter::NONE
+        );
+        
+        return $formatter->format(new DateTime($date));
+    }
+
     public function __toString() : string {
+        $date = $this->formatDate($this->getDate());
+        $bank_date = $this->formatDate($this->getBankDate());
         echo "<div class='transaction'>";
-            echo "<div class='date'>".$this->getDate()."</div>";
+            echo "<div class='date'>".$date."</div>";
+                
             echo "<div class='title'>".$this->getTitle()."</div>";
-            echo "<div class='date'>".$this->getBankDate()."</div>";
-            for ($i = 0; $i < $this->getNbOfCat(); $i++) {
-                echo "<div class='cat_{$i}'>".$this->getCategories()[$i]->getName()."</div>";
-            }
+
+            echo "<div class='date'>".$bank_date."</div>";
+
+            echo "<div class='categories'>";
+                for ($i = 0; $i < $this->getNbOfCat(); $i++) {
+                    echo "<div class='cat'>".$this->getCategories()[$i]->getName()."</div>";
+                }
+            echo "</div>";
+
             echo "<div class='amount'>".$this->getAmount()."</div>";
-            echo "<a href='index.php?action=del-transaction&id={$this->getIdAccount()}&id_transaction={$this->getId()}'>Supprimer</a>";
-            echo "<a href='index.php?action=edit-transaction&id={$this->getIdAccount()}&id_transaction={$this->getId()}'>Edit</a>";
+
+            echo "<a href='index.php?action=del-transaction&id={$this->getIdAccount()}&id_transaction={$this->getId()}'>";
+                echo "<img alt='trash' src='/public/images/icones/supprimer.png' />";
+            echo "</a>";
+            echo "<a href='index.php?action=edit-transaction&id={$this->getIdAccount()}&id_transaction={$this->getId()}'>";
+                echo "<img alt='modify' src='/public/images/icones/bouton-modifier.png' />";
+            echo "</a>";
         echo "</div>";
         return "This the display of a transaction !";
     }

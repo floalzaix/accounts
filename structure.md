@@ -11,6 +11,8 @@
    * [x] To have summury feedback (Balance and then per month the revenues and expencies + details if wanted *button detail* => *page*) *Page*
    * [x] To have a global feedback of all accounts *Page*
    * [x] A menu to switch pages
+   * [ ] Banking style
+   * [ ] A marketable structure ...
 
 ---
 
@@ -31,6 +33,8 @@
     * [ ] A display with arrows for the categories
     * [ ] Optimisation and cleaning of the category system => the category class and DAO
     * [ ] A setting *page* to select the theme and others parametable stuff
+    * [ ] A loading page with the shilds for the login
+    * [ ] Stockage des dates au format DateTime
 
 ---
 

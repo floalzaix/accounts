@@ -1,12 +1,67 @@
 .account {
-    width: 400px;
-    min-height: 75px;
+    min-width: 390px;
+    width: calc(400px - 25px);
+    min-height: 65px;
+    height: calc(75px - 25px);
+
+    padding: 25px;
 
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 5fr 1fr;
     align-items: center;
     justify-items: center;
-    text-align: center;
 
-    background-color: white;
+    border-radius: 15px;
+    border: 2px solid white;
+    transition: border 0.3s ease;
+}
+.account:hover {
+    background: linear-gradient(to right, deepskyblue 45%, white 80%);
+    border-color: deepskyblue;
+}
+.account:active {
+    scale: 98%;
+}
+.account > .name {
+    all: unset;
+
+    height: 100%;
+    width: calc(100% - 20px);
+    margin-right: 20px;
+
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-content: center;
+    text-align: start;
+
+    color: white;
+    font: bold 1.4rem "arial-black", Arial, sans-serif;
+    white-space: nowrap;
+    overflow: auto;
+}   
+.account > .name:hover {
+    cursor: pointer;
+}
+.account > .name > #name {
+    width: calc(100% - 15px);
+    padding-left: 15px;
+
+    align-content: center;
+}
+.account > .button > img {
+    filter: invert(1);
+}
+.account > .button {
+    transition: scale 0.3s ease;
+}
+.account > .button:hover {
+    scale: 110%;
+}
+.account > .name > img {
+    width: 50px;
+    height: 50px;
+
+    justify-self: center;
+
+    filter: invert(1);
 }

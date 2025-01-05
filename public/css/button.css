@@ -55,6 +55,8 @@
 .button > img {
     width: 23px;
     height: 23px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .button:hover > img {
     filter: invert(1);
