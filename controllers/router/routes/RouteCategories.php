@@ -55,12 +55,10 @@ class RouteCategories extends Route {
                     }
                 } elseif ($params["edit_category"] ?? false) {
                     $message = "Catégorie modifié avec succés !";
-                    $level_parent = $this->controller->getLevelOfCategory(parent::getParam($params, "parent", true));
                     $this->controller->editCategory(
                         parent::getParam($params, "id_cat"),
                         $id_account,
                         parent::getParam($params, "name"),
-                        $level_parent+1,
                         parent::getParam($params, "parent", true)
                     );
                 } else {
@@ -83,7 +81,7 @@ class RouteCategories extends Route {
                 "error" => $error,
             ]);
 
-            echo "<meta http-equiv='refresh' content='0; url=index.php?action=categories&id={$id_account}&message={$message}&error={$error}' />";
+            //echo "<meta http-equiv='refresh' content='0; url=index.php?action=categories&id={$id_account}&message={$message}&error={$error}' />";
         } else {
             header("Location: index.php?action=login");
             exit();

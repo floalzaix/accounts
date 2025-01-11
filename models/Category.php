@@ -79,11 +79,6 @@ class Category {
         $this->level = $level;
     }
     public function setChilds(array $childs) : void {
-        foreach($childs as $child) {
-            if ($child->getLevel() != $this->getLevel()+1) {
-                throw new Exception("Erreur : la catégorie ".$this->getName()." niveau ".$this->getLevel()." a une catégorie enfant ".$child->getName()." sur le niveau ".$child->getLevel());
-            }
-        }
         $this->childs = $childs;
     }
     public function setIdParent(?string $id_parent) : void {

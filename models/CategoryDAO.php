@@ -67,6 +67,8 @@ class CategoryDAO extends CatHierarchy {
         $query = $this->execRequest($sql, ["id" => $category->getId(), "id_account" => $category->getIdAccount(), "name" => $category->getName(), "id_parent" => $category->getIdParent()]);
 
         $this->setLevelOfCategory($category->getId(), $category->getLevel());
+
+        $this->removeChilds($category->getId());
         foreach($category->getChilds() as $child) {
             $this->addChild($category->getId(), $child->getId());
         }

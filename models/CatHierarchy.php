@@ -38,9 +38,12 @@ class CatHierarchy extends CategoryLevelDAO {
     public function addChild($id_cat_parent, $id_cat_child) : void {
         if (!($id_cat_parent == "" || $id_cat_child == "")) {
             $sql = "INSERT INTO cat_hierarchy(id_cat_parent, id_cat_child) VALUES (:id_cat_parent, :id_cat_child)";
-            $query = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
+            $query1 = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
 
-            if (!$query) {
+            $sql = "UPDATE categories SET id_parent=:id_cat_parent WHERE id=:id_cat_child";
+            $query2 = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
+
+            if (!$query1 || !$query2) {
                 throw new Exception("Erreur lors de l'ajout d'un enfant à une catégorie parent en base de donnée !");
             }
         } 
@@ -48,14 +51,24 @@ class CatHierarchy extends CategoryLevelDAO {
 
     public function removeChild(string $id_cat_parent, string $id_cat_child) : void {
         $sql = "DELETE FROM cat_hierarchy WHERE id_cat_parent=:id_cat_parent AND id_cat_child=:id_cat_child";
-        $query = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
+        $query1 = $this->execRequest($sql, ["id_cat_parent" => $id_cat_parent, "id_cat_child" => $id_cat_child]);
 
-        if(!$query) {
+        $sql = "UPDATE categories SET id_parent=NULL WHERE id=:id_cat_child";
+        $query2 = $this->execRequest($sql, ["id_cat_child" => $id_cat_child]);
+
+        if(!$query1 || !$query2) {
             throw new Exception("Erreur lors de la supression d'une catégorie enfant d'une catégorie parent !");
         }
     }
 
-    protected function removeChilds(string $id_cat_parent) : void {
+    public function removeChilds(string $id_cat_parent) : void {
+        $childs = $this->getChilds($id_cat_parent);
+        foreach($childs as $child) {
+            $this->removeChild($id_cat_parent, $child->getId());
+        }
+    }
+
+    protected function deleteChilds(string $id_cat_parent) : void {
         $childs = $this->getChilds($id_cat_parent);
         foreach($childs as $child) {
             $this->delete($child->getId());
@@ -63,7 +76,7 @@ class CatHierarchy extends CategoryLevelDAO {
     }
 
     public function delete(string $id) : void {
-        $this->removeChilds($id);
+        $this->deleteChilds($id);
 
         $sql = "DELETE FROM categories WHERE id=:id";
         $query = $this->execRequest($sql, ["id" => $id]);

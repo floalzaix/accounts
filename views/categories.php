@@ -21,7 +21,7 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account, "acco
                     <?php
                         echo "<option value=''>Racine</option>";
                         foreach($categories as $category) {
-                            if ($category->getLevel() <= $nb_of_categories-1 && $cat->getId() != $category->getId()) {
+                            if ($cat->getId() != $category->getId()) {
                                 if ($cat->getIdParent() == $category->getId()) {
                                     echo "<option value='{$category->getId()}' selected>".$category->getName()."</option>";
                                 } else {

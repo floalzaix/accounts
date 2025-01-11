@@ -22,7 +22,7 @@ class CategoryLevelDAO extends BasePDODAO {
         return $level;
     }
 
-    protected function setLevelOfCategory(string $id_cat, int $level) : void {
+    public function setLevelOfCategory(string $id_cat, int $level) : void {
         $sql = "DELETE FROM categories_level WHERE id_cat=:id_cat";
         $query = $this->execRequest($sql, ["id_cat" => $id_cat]);
 

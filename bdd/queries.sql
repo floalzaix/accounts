@@ -70,10 +70,22 @@ CREATE TABLE cat_hierarchy (
 
 SELECT * FROM users;
 SELECT * FROM accounts;
-SELECT * FROM categories;
+
+SELECT c1.id, c1.id_account, c1.name as "Name", c2.name as "Parent"
+FROM categories c1
+INNER JOIN categories c2 ON c1.id_parent=c2.id;
+
 SELECT * FROM transactions;
 SELECT * FROM transactions_categories;
-SELECT * FROM categories_level;
+
+SELECT c.name, cl.level
+FROM categories_level cl
+INNER JOIN categories c on cl.id_cat = c.id;
+
+SELECT c2.name as "Parent", c1.name as "Child"
+FROM cat_hierarchy
+INNER JOIN categories c1 on cat_hierarchy.id_cat_child = c1.id
+INNER JOIN categories c2 on cat_hierarchy.id_cat_parent = c2.id;
 
 DELETE FROM categories;
 
