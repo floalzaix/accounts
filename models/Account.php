@@ -26,16 +26,16 @@ class Account {
     }
 
     public function __toString() : string {
-        echo "<div class='account'>";
-            echo "<a class='name' href='index.php?action=inputs&id={$this->getId()}'>";
+        echo "<a class='account' href='index.php?action=inputs&id={$this->getId()}'>";
+            echo "<div class='name'>";
                 echo "<img alt='Icone compte' src='/public/images/icones/doubles_cartes.png' />";
                 echo "<div id='name'>".$this->getName()."</div>";
-            echo "</a>";
-            echo "<a class='button' href='index.php?action=del-account&id={$this->getId()}'>";
-                echo "<img alt='Bouton supprimer' src='/public/images/icones/supprimer.png' />";
-            echo "</a>";
-        echo "</div>";
-        return "This is the display of the accont intitled : ".$this->getName();
+            echo "</div>";
+            echo "<div class='button'>";
+                echo "<img href='index.php?action=del-account&id={$this->getId()}' alt='Bouton supprimer' src='/public/images/icones/supprimer.png' />";
+            echo "</div>";
+        echo "</a>";
+        return "This is the display of the account entitled : ".$this->getName();
     }
 
     //Getters

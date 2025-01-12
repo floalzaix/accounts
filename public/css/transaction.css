@@ -1,25 +1,21 @@
 .transaction {
-    display: flex;
+    height: 30px;
 }
-.transaction > a > img {
-    width: 25px;
-    height: 25px;
+.transaction > td > a > img {
+    width: 20px;
+    height: 20px;
 }
-.transaction > .date {
-
-}
-.transaction > .title {
-    width: 400px;
+.transaction > .title > div {
+    max-width: 450px;
 
     overflow: auto;
 }
-.transaction > .categories {
-    width: 300px;
-
-    display: flex;
-
+.transaction > .categories > div {
     overflow: auto;
 }
 .transaction > .cat {
-    width: 100px;
+    min-width: 150px;
+}
+.transaction > .amount {
+    width: 70px;
 }

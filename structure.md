@@ -36,6 +36,7 @@
     * [ ] A loading page with the shilds for the login
     * [ ] Storing the date to the DateTime format or not ?
     * [ ] Encoding the url strings 
+    * [ ] To have a mobile and ipad compatible layout
 
 ---
 

@@ -1,4 +1,6 @@
 .account {
+    all: unset;
+
     min-width: 390px;
     width: calc(400px - 25px);
     min-height: 65px;

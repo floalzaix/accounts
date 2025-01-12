@@ -6,6 +6,8 @@
 
 body  {
     margin: 0%;
+
+    overflow: hidden;
 }
 
 /* Titles */
@@ -147,13 +149,85 @@ h1 {
 }
 
 /* Inputs page */
-#main_account {
-}
 #body_inputs {
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: 1fr minmax(85px, 120px);
 }
 .transactions {
+    height: 75vh;
+    padding: 45px;
+
     display: flex;
     flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0px 0px 7px 5px rgba(0, 0, 175, 0.1);
 }
 #body_inputs > form {
+    width: 100%;
+    margin: 0;
+    padding: 25px;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+
+    background-color: white;
+    border-radius: 17px;
+    box-shadow: 0px 0px 7px 5px rgba(0, 0, 175, 0.1);
+}
+#body_inputs > form > input, #body_inputs > form > div > input {
+    border-bottom: none;
+    font: 0.9em "arial-black", Arial, sans-serif;
+}
+#body_inputs > form > .input  {
+    width: 100%;
+    display: flex;
+}
+#body_inputs > form > .input > input[type = "text"] {
+    width: 300px;
+}
+.transactions > #overflow {
+    overflow: auto;
+}
+table, td, th {
+    padding: 7px;
+
+    border: 1px solid black;
+    border-collapse: collapse;
+    font: 1em "arial-black", Arial, sans-serif;
+}
+table:hover {
+    cursor: crosshair;
+}
+thead {
+    position: sticky;
+    top: 0;
+
+    color: white;
+    background-color: deepskyblue;
+}
+th {
+    border: 1px solid deepskyblue;
+    font: bold 1em "arial-black", Arial, sans-serif;
+}
+
+
+/* Template menus */
+#main_account {
+    display: grid;
+    grid-template-columns: minmax(205px,260px)  1fr;
+
+    background-color: aliceblue;
+}
+#body_account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

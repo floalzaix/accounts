@@ -21,14 +21,28 @@
             </nav>
 
             <nav id="side_menu">
-                <div class="account_name_nav"> <?= $account_name ?> </div>
-                <a href="index.php?action=summary&id=<?= $id_account ?>">Récapitulatif</a>
-                <a href="index.php?action=details&id=<?= $id_account ?>">Détails</a>
-                <a href="index.php?action=inputs&id=<?= $id_account ?>">Transactions</a>
-                <a href="index.php?action=categories&id=<?= $id_account ?>">Catégories</a>
+                <div id="account_name"> <?= $account_name ?> </div>
+                <a href="index.php?action=summary&id=<?= $id_account ?>">
+                    <img alt="charte de croissance" src="/public/images/icones/charte-de-croissance.png" />
+                    Récapitulatif
+                </a>
+                <a href="index.php?action=details&id=<?= $id_account ?>">
+                    <img alt="loupe" src="/public/images/icones/loupe.png" />
+                    Détails
+                </a>
+                <a href="index.php?action=inputs&id=<?= $id_account ?>">
+                    <img alt="transaction icone" src="/public/images/icones/transaction.png" />
+                    Transactions
+                </a>
+                <a href="index.php?action=categories&id=<?= $id_account ?>">
+                    <img alt="catégorie icone" src="/public/images/icones/categorie.png" />
+                    Catégories
+                </a>
             </nav>
 
-            <?= $this->section('content') ?>
+            <div id="body_account">
+                <?= $this->section('content') ?>
+            </div>
         </div>
     </body>
 </html>

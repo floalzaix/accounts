@@ -1,7 +1,9 @@
+/* Upper Menu */
 #upper_menu {
     position: fixed;
     right: 0px;
     top: 60px;
+    z-index: 9999;
     padding-right: 35px;
 
     display: flex;
@@ -11,6 +13,9 @@
     border-top-left-radius: 14px;
     border-bottom-left-radius: 14px;
     box-shadow: -1px 0px 7px 3px rgba(1, 3, 8, 0.5);
+}
+#main_account > #upper_menu {
+    box-shadow: -1px 0px 7px 3px rgba(0, 0, 175, 0.1);
 }
 #upper_menu > a {
     all: unset;
@@ -36,4 +41,60 @@
 #upper_menu > a > img {
     width: 45px;
     height: 45px;
+}
+
+/* Side Menu */
+#side_menu {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 4px 0px 6px 5px rgba(0, 0, 160, 0.2);
+    background: radial-gradient(circle at 50% 100%, rgb(23, 108, 212) 10%, rgb(9, 37, 71)35%);
+}
+#side_menu > a {
+    all: unset;
+
+    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    display: flex;
+    align-items: center;
+
+    color: white;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+    font: bold 1.1em "arial-black", Arial, sans-serif;
+    transition: scale 0.3s ease;
+}
+#side_menu > a:hover {
+    cursor: pointer;
+    background: linear-gradient(to right, deepskyblue 45%, aliceblue 80%);
+    box-shadow: 15px 0px 0px 0px rgba(240, 248, 255, 1);
+}
+#side_menu > a:active {
+    scale: 101%;
+    cursor: pointer;
+    background: linear-gradient(to right, deepskyblue 45%, aliceblue 80%)
+}
+#side_menu > a > img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+
+    filter: invert(1);
+}
+#side_menu > #account_name {
+    margin: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+
+    text-align: center;
+
+    color: white;
+    border-bottom: 4px solid white;
+    border-radius: 4px;
+    font: bold 1.7em "arial-black", Arial, sans-serif;
 }

@@ -3,7 +3,7 @@ form {
     flex-direction: column;
     gap: 20px;
 }
-form > img {
+form > div > img, form > img {
     width: 25px;
     height: 25px;
 }
