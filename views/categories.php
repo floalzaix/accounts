@@ -5,6 +5,8 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account, "acco
 ?>
 
 <div id="body_categories">
+    <h1>Catégories</h1>
+
     <div class="categories_display">
         <?php
             foreach($categories as $category) {

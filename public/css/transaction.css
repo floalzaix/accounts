@@ -6,6 +6,7 @@
     height: 20px;
 }
 .transaction > .title > div {
+    min-width: 200px;
     max-width: 450px;
 
     overflow: auto;
@@ -18,4 +19,6 @@
 }
 .transaction > .amount {
     width: 70px;
+
+    text-align: center;
 }

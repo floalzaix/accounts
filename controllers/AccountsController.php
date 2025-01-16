@@ -46,12 +46,18 @@ class AccountsController {
 
         $categories = $this->category_dao->getAllOfAccount($id_account);
 
-        $detailed_expenses = $this->getDetailedExpensesOfAccount($id_account, $categories, $months);
-        $detailed_revenues = $this->getDetailedRevenuesOfAccount($id_account, $categories, $months);
+        $detailed_expenses = $this->getDetailedExpensesOfAccount($id_account, $account->getNbOfCategories(),  $categories, $months);
+        $detailed_revenues = $this->getDetailedRevenuesOfAccount($id_account, $account->getNbOfCategories(), $categories, $months);
 
-        $categories_name = ["other" => "Autres"];
+        $categories_name = [];
+        $cat_levels = [];
+        for($i = 1; $i <= 10; $i++) {
+            $categories_name["other_{$i}"] = "Autres {$i}";
+            $cat_levels["other_{$i}"] = $i;
+        }
         foreach($categories as $category) {
             $categories_name[$category->getId()] = $category->getName();
+            $cat_levels[$category->getId()] = $category->getLevel();
         }
 
         MessageHandler::setMessageToPage($params["message"] ?? "", "details", $params["error"] ?? false);
@@ -62,7 +68,8 @@ class AccountsController {
             "account_name" => $account->getName(),
             "detailed_expenses" => $detailed_expenses,
             "detailed_revenues" => $detailed_revenues,
-            "categories_name" => $categories_name
+            "categories_name" => $categories_name,
+            "cat_levels" => $cat_levels
         ]);
     }
 
@@ -110,7 +117,8 @@ class AccountsController {
             "mbalance" => $mbalance,
             "mrevenues" => $mrevenues,
             "mexpenses" => $mexpenses,
-            "mtop_transactions" => $mtop_transactions
+            "mtop_transactions" => $mtop_transactions,
+            "nb_of_categories" => $account->getNbOfCategories()
         ]);
     }
     public function getExpensesOfAccount(string $id_account) : int {
@@ -131,32 +139,37 @@ class AccountsController {
     public function getBalanceEndMonth(string $id_account, int $month) : int {
         return $this->transaction_dao->getBalanceEndMonth($id_account, $month);
     }
-    public function getDetailedExpensesOfAccount(string $id_account, array $categories, array $months) : array {
+    public function getDetailedExpensesOfAccount(string $id_account, int $nb_of_cat, array $categories, array $months) : array {
         $tab = [];
         foreach($categories as $category) {
             if($category->getLevel() == 1) {
-                $tab[$category->getId()] = $this->getDetailedExpensesPerMonthOfCategory($id_account, $category, $months);
+                $tab[$category->getId()] = $this->getDetailedExpensesPerMonthOfCategory($id_account, $nb_of_cat, $category, $months);
             }
         }
         
+        $tot = 0;
         foreach($months as $m => $num) {
             $S = 0;
             foreach($tab as $roots) {
                 $S+= $roots["expenses_per_month_of_category"][$num] ?? 0;
             }
             $tab["totals"]["tot_month_".$num] = $S;
+            $tot+= $S;
         }
+        $tab["totals"]["sum"] = $tot;
 
         return $tab;
     }
-    public function getDetailedExpensesPerMonthOfCategory(string $id_account, Category $category, array $months) : array {
+    public function getDetailedExpensesPerMonthOfCategory(string $id_account, int $nb_of_cat,  Category $category, array $months) : array {
         $expenses_per_month_of_category = $this->transaction_dao->getExpensesPerMonthOfCategory($id_account, $category->getId(), $months);
 
         $childs = $category->getChilds();
         $expenses_per_month_of_childs = [];
+        $expenses_per_month_of_childs["other_{$category->getLevel()}"] = [];
         foreach($childs as $child) {
             $expenses_per_month_of_childs[$child->getId()] = $this->getDetailedExpensesPerMonthOfCategory(
                 $id_account, 
+                $nb_of_cat,
                 $child,
                 $months
             );
@@ -169,46 +182,63 @@ class AccountsController {
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
                 $S+= $child_expenses_per_month["expenses_per_month_of_cateogry"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)  && $category->getLevel() != $nb_of_cat) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
 
         if(!empty($expenses_per_month_child_without_category)) {
-            $expenses_per_month_of_childs["other"] = [
+            $S = 0;
+            foreach($months as $month => $num) {
+                if (!isset($expenses_per_month_child_without_category[$num])) {
+                    $expenses_per_month_child_without_category[$num] = 0;
+                } else {
+                    $S+= $expenses_per_month_child_without_category[$num];
+                }
+            }
+            $expenses_per_month_child_without_category["sum"] = $S;
+
+            $expenses_per_month_of_childs["other_{$category->getLevel()}"] = [
                 "expenses_per_month_of_category" => $expenses_per_month_child_without_category,
                 "expenses_per_month_childs" => []
             ];
+        } else {
+            unset($expenses_per_month_of_childs["other_{$category->getLevel()}"]);
         }
 
         return ["expenses_per_month_of_category" => $expenses_per_month_of_category, "expenses_per_month_childs" => $expenses_per_month_of_childs];
     }
-    public function getDetailedRevenuesOfAccount(string $id_account, array $categories, array $months) : array {
+    public function getDetailedRevenuesOfAccount(string $id_account, int $nb_of_cat, array $categories, array $months) : array {
         $tab = [];
         foreach($categories as $category) {
             if($category->getLevel() == 1) {
-                $tab[$category->getId()] = $this->getDetailedRevenuesPerMonthOfCategory($id_account, $category, $months);
+                $tab[$category->getId()] = $this->getDetailedRevenuesPerMonthOfCategory($id_account, $nb_of_cat, $category, $months);
             }
         }
         
+        $tot = 0;
         foreach($months as $m => $num) {
             $S = 0;
             foreach($tab as $roots) {
                 $S+= $roots["expenses_per_month_of_category"][$num] ?? 0;
             }
             $tab["totals"]["tot_month_".$num] = $S;
+            $tot+= $S;
         }
+        $tab["totals"]["sum"] = $tot;
 
         return $tab;
     }
-    public function getDetailedRevenuesPerMonthOfCategory(string $id_account, Category $category, array $months) : array {
+    public function getDetailedRevenuesPerMonthOfCategory(string $id_account, int $nb_of_cat, Category $category, array $months) : array {
         $expenses_per_month_of_category = $this->transaction_dao->getRevenuesPerMonthOfCategory($id_account, $category->getId(), $months);
 
         $childs = $category->getChilds();
         $expenses_per_month_of_childs = [];
+        $expenses_per_month_of_childs["other_{$category->getLevel()}"] = [];
         foreach($childs as $child) {
             $expenses_per_month_of_childs[$child->getId()] = $this->getDetailedRevenuesPerMonthOfCategory(
                 $id_account, 
+                $nb_of_cat,
                 $child,
                 $months
             );
@@ -221,21 +251,28 @@ class AccountsController {
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
                 $S+= $child_expenses_per_month["expenses_per_month_of_category"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs) && $category->getLevel() != $nb_of_cat) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
 
         if(!empty($expenses_per_month_child_without_category)) {
+            $S = 0;
             foreach($months as $month => $num) {
                 if (!isset($expenses_per_month_child_without_category[$num])) {
                     $expenses_per_month_child_without_category[$num] = 0;
+                } else {
+                    $S+= $expenses_per_month_child_without_category[$num];
                 }
             }
-            $expenses_per_month_of_childs["other"] = [
+            $expenses_per_month_child_without_category["sum"] = $S;
+            
+            $expenses_per_month_of_childs["other_{$category->getLevel()}"] = [
                 "expenses_per_month_of_category" => $expenses_per_month_child_without_category,
                 "expenses_per_month_childs" => []
             ];
+        } else {
+            unset($expenses_per_month_of_childs["other_{$category->getLevel()}"]);
         }
 
         return ["expenses_per_month_of_category" => $expenses_per_month_of_category, "expenses_per_month_childs" => $expenses_per_month_of_childs];

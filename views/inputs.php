@@ -30,7 +30,7 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account, "acco
                     ?>
                 </tbody>
             </table>
-            </div>
+        </div>
     </div>
 
     <?= Helpers\MessageHandler::displayMessage("inputs") ?>

@@ -33,10 +33,12 @@
     * [ ] A display with arrows for the categories
     * [ ] Optimisation and cleaning of the category system => the category class and DAO
     * [ ] A setting *page* to select the theme and others parametable stuff
-    * [ ] A loading page with the shilds for the login
+    * [ ] A loading page with the shields for the login
     * [ ] Storing the date to the DateTime format or not ?
     * [ ] Encoding the url strings 
     * [ ] To have a mobile and ipad compatible layout
+    * [ ] To have an eco conception
+    * [ ] To have images to Web format
 
 ---
 
