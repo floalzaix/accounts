@@ -17,8 +17,8 @@ class RouteInputs extends Route {
                     $message = "
                         Etes-vous sur de vouloir supprimer cette catégorie ?
                         <form action='index.php?action=inputs&id={$id_account}' method='POST'>
-                            <input type='submit' id='confirm' name='confirm' value='Confirmer' />
-                            <input type='submit' id='cancel' name='cancel' value='Annuler' />
+                            <input type='submit' class='button' id='confirm' name='confirm' value='Confirmer' />
+                            <input type='submit' class='button' id='empty' name='cancel' value='Annuler' />
                             <input type='hidden' id='del_transaction' name='del_transaction' value='true' />
                             <input type='hidden' id='id_transaction' name='id_transaction' value='{$id_transaction}' />
                         </form>

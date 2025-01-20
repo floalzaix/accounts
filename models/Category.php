@@ -33,12 +33,25 @@ class Category {
     public function __toString() : string {
         if (!$this->displayed) {
             echo "<div class='category'>";
-            echo "<div class='category_name'>".$this->getName()."</div>";
-            echo "<a href='index.php?action=edit-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>Modifier</a>";
-            echo "<a href='index.php?action=del-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>Supprimer</a>";
-            foreach($this->getChilds() as $child) {
-                $child->__toString();
-            }
+                echo "<div class='category_name'>".$this->getName()."</div>";
+
+                echo "<div class='buttons'>";
+                    echo "<a href='index.php?action=edit-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>";
+                        echo "<img alt='modify' src='/public/images/icones/bouton-modifier.png' />";
+                    echo "</a>";
+                    echo "<a href='index.php?action=del-category&id={$this->getIdAccount()}&id_cat={$this->getId()}'>";
+                        echo "<img alt='trash' src='/public/images/icones/supprimer.png' />";
+                    echo "</a>";
+                echo "</div>";
+
+                if (!empty($this->getChilds())) {
+                    echo "<img alt='arrow pointing right' src='/public/images/icones/fleche-droite.png' />";
+                }
+                echo "<div class='child'>";
+                foreach($this->getChilds() as $child) {
+                        $child->__toString();
+                }
+                echo "</div>";
             echo "</div>";
             $this->displayed = true;
         }

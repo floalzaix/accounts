@@ -53,7 +53,7 @@ class AccountsController {
         $cat_levels = [];
         for($i = 1; $i <= 10; $i++) {
             $categories_name["other_{$i}"] = "Autres {$i}";
-            $cat_levels["other_{$i}"] = $i;
+            $cat_levels["other_{$i}"] = $i - 1;
         }
         foreach($categories as $category) {
             $categories_name[$category->getId()] = $category->getName();

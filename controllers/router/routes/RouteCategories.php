@@ -17,8 +17,8 @@ class RouteCategories extends Route {
                     $message = "
                         Etes-vous sur de vouloir supprimer cette catégorie ?
                         <form action='index.php?action=categories&id={$id_account}' method='POST'>
-                            <input type='submit' id='confirm' name='confirm' value='Confirmer' />
-                            <input type='submit' id='cancel' name='cancel' value='Annuler' />
+                            <input type='submit' class='button' id='confirm' name='confirm' value='Confirmer' />
+                            <input type='submit' class='button' id='empty' name='cancel' value='Annuler' />
                             <input type='hidden' id='del_category' name='del_category' value='true' />
                             <input type='hidden' id='id_cat' name='id_cat' value='{$id_cat}' />
                         </form>
@@ -81,7 +81,7 @@ class RouteCategories extends Route {
                 "error" => $error,
             ]);
 
-            //echo "<meta http-equiv='refresh' content='0; url=index.php?action=categories&id={$id_account}&message={$message}&error={$error}' />";
+            echo "<meta http-equiv='refresh' content='0; url=index.php?action=categories&id={$id_account}&message={$message}&error={$error}' />";
         } else {
             header("Location: index.php?action=login");
             exit();

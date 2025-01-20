@@ -2,14 +2,13 @@
     all: unset;
 
     min-width: 390px;
-    width: calc(400px - 25px);
-    min-height: 65px;
-    height: calc(75px - 25px);
-
-    padding: 25px;
+    width: 400px;
+    min-height: 100px;
+    height: 125px;
 
     display: grid;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: minmax(320px, 330px) 70px;
+    grid-template-rows: minmax(100px, 125px);
     align-items: center;
     justify-items: center;
 
@@ -28,8 +27,9 @@
     all: unset;
 
     height: 100%;
-    width: calc(100% - 20px);
+    width: calc(100% - 20px - 20px);
     margin-right: 20px;
+    padding-left: 20px;
 
     display: grid;
     grid-template-columns: 1fr 3fr;

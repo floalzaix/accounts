@@ -18,8 +18,8 @@ class RouteHome extends Route {
                     $message = "
                         Etes-vous sur de vouloir supprimer ce compte ?
                         <form action='index.php?action=home' method='POST'>
-                            <input type='submit' id='confirm' name='confirm' value='Confirmer' />
-                            <input type='submit' id='cancel' name='cancel' value='Annuler' />
+                            <input type='submit' class='button' id='confirm' name='confirm' value='Confirmer' />
+                            <input type='submit' class='button' id='empty' name='cancel' value='Annuler' />
                             <input type='hidden' id='del_account' name='del_account' value='true' />
                             <input type='hidden' id='id_account' name='id_account' value='{$id_account}' />
                         </form>

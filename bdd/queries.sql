@@ -20,11 +20,15 @@ DROP TABLE IF EXISTS accounts;
 CREATE TABLE accounts (
     id VARCHAR(50),
     id_user VARCHAR(50),
-    name VARCHAR(100),
-    nb_of_categories TINYINT,
+    name VARCHAR(100) NOT NULL,
+    nb_of_categories TINYINT NOT NULL,
+    init_amount NUMERIC(10, 2) NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_user) REFERENCES users(id)
 );
+
+/*ALTER TABLE accounts
+ADD init_amount NUMERIC(10, 2) NULL DEFAULT NULL;*/
 
 CREATE TABLE transactions (
     id VARCHAR(50),

@@ -102,6 +102,7 @@
                     VARCHAR(50) id_user FK
                     VARCHAR(100) name "NOT NULL"
                     TINYINT nb_of_categories "NOT NULL"
+                    NUMERIC(10-2) init_amount "NULL"
                 }
                 transactions {
                     VARCHAR(50) id PK
@@ -109,7 +110,7 @@
                     DATE date "NOT NULL"
                     VARCHAR(100) title 
                     DATE bank_date 
-                    INT amount "NOT NULL"
+                    NUMERIC(10-2) amount "NOT NULL"
                 }
                 categories {
                     VARCHAR(50) id PK

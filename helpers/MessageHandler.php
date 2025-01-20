@@ -76,11 +76,26 @@ class MessageHandler {
         padding: 26px;
 
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         text-align: center;
         justify-content: center;
+        align-items: center;
+        gap: 20px;
+        box-sizing: border-box;
     
         color: white;
+        font: bold 1em "arial-black", Arial, sans-serif;
+    }
+    .message:empty {
+        display: none;
+    }
+
+    .message > form {
+        margin: 0;
+
+        flex-direction: row;
+    }
+    .message > form > input {
         font: bold 1em "arial-black", Arial, sans-serif;
     }
 </style>

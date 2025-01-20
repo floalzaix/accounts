@@ -1,0 +1,19 @@
+.category {
+    padding: 5px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    border: 2px solid deepskyblue;
+    border-radius: 17px;
+}
+.category > div > a > img, .category > img {
+    width: 20px;
+    height: 20px;
+}
+.category > .child {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
