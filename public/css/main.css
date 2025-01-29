@@ -195,6 +195,9 @@ h1 {
     width: 100%;
     display: flex;
 }
+#body_inputs > form > input[type = "number"] {
+    min-width: 75px;
+}
 #body_inputs > form > .input > input[type = "text"] {
     width: 280px;
 }

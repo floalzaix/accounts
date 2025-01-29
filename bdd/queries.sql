@@ -38,10 +38,14 @@ CREATE TABLE transactions (
     date DATE,
     title VARCHAR(100),
     bank_date DATE,
-    amount INT NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_account) REFERENCES accounts(id)
 );
+
+ALTER TABLE transactions
+ALTER COLUMN amount
+SET DATA TYPE NUMERIC(10, 2);
 
 DROP TABLE IF EXISTS categories;
 
