@@ -192,12 +192,13 @@ h1 {
     font: 0.9em "arial-black", Arial, sans-serif;
 }
 #body_inputs > form > .input  {
+    min-width: 50px;
     width: 100%;
     display: flex;
-}
-#body_inputs > form > input[type = "number"] {
-    min-width: 75px;
-}
+}  
+#body_inputs > form > .input > input[type="number"] {
+    text-align: center;
+} 
 #body_inputs > form > .input > input[type = "text"] {
     width: 280px;
 }

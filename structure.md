@@ -44,6 +44,7 @@
     * [ ] To have unitary tests
     * [ ] To have the menu bar horizontal some times
     * [ ] To secure the database multiples
+    * [ ] To secure the version of the language : stable
 
 ---
 
