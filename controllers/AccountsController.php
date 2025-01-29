@@ -182,7 +182,7 @@ class AccountsController {
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
                 $S+= $child_expenses_per_month["expenses_per_month_of_category"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)  && $category->getLevel() != $nb_of_cat && $expenses_per_month_of_category[$num]-$S > -10000000000) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)  && $category->getLevel() != $nb_of_cat && abs($expenses_per_month_of_category[$num]-$S) > 0.001) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
@@ -251,7 +251,7 @@ class AccountsController {
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
                 $S+= $child_expenses_per_month["expenses_per_month_of_category"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs) && $category->getLevel() != $nb_of_cat && $expenses_per_month_of_category[$num]-$S > 0.001) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs) && $category->getLevel() != $nb_of_cat && abs($expenses_per_month_of_category[$num]-$S) > 0.001) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
