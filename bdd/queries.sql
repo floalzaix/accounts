@@ -11,6 +11,8 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 
+DELETE FROM users;
+
 DROP TABLE IF EXISTS cat_hierarchy;
 DROP TABLE IF EXISTS categories_level;
 DROP TABLE IF EXISTS transactions_categories;
@@ -21,7 +23,7 @@ CREATE TABLE accounts (
     id VARCHAR(50),
     id_user VARCHAR(50),
     name VARCHAR(100) NOT NULL,
-    nb_of_categories TINYINT NOT NULL,
+    nb_of_categories SMALLINT NOT NULL,
     init_amount NUMERIC(10, 2) NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id_user) REFERENCES users(id)
@@ -61,7 +63,7 @@ CREATE TABLE transactions_categories (
 
 CREATE TABLE categories_level (
     id_cat VARCHAR(50),
-    level TINYINT NOT NULL CHECK (level BETWEEN 1 AND 10),
+    level SMALLINT NOT NULL CHECK (level BETWEEN 1 AND 10),
     FOREIGN KEY (id_cat) REFERENCES categories(id) ON DELETE CASCADE
 );
 

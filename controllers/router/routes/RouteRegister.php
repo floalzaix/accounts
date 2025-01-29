@@ -7,8 +7,9 @@ use Exception;
 
 class RouteRegister extends Route {
     protected function get($params = []) : void {
+        $message = urldecode($params["message"] ?? "");
         $this->controller->displayRegister([
-            "message" => $params["message"] ?? "",
+            "message" => $message,
             "error" => $params["error"] ?? false
         ]);
     }
@@ -29,7 +30,9 @@ class RouteRegister extends Route {
         }
         $this->controller->displayRegister(["message" => $message, "error" => $error]);
 
-        echo "<meta http-equiv='refresh' content='0; url=index.php?action=login&message={$message}&error={$error}' />";
+        $message = urlencode($message);
+
+        echo "<meta http-equiv='refresh' content='0; url=index.php?action=register&message={$message}&error={$error}' />";
     }
 }
 

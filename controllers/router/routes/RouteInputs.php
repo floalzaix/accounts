@@ -8,7 +8,7 @@ use Exception;
 class RouteInputs extends Route {
     protected function get($params = []) : void {
         if ($this->controller->connected()) {
-            $message = urldecode($params["message"]) ?? "";
+            $message = urldecode($params["message"] ?? "");
             $error = $params["error"] ?? false;
             try {
                 if (isset($params["del_transaction"]) && $params["del_transaction"]) {

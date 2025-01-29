@@ -7,8 +7,9 @@ use Exception;
 
 class RouteLogin extends Route {
     protected function get($params = []) : void {
+        $message = urldecode($params["message"] ?? "");
         $this->controller->displayLogin([
-            "message" => $params["message"] ?? "",
+            "message" => $message,
             "error" => $params["error"] ?? false
         ]);
     }
@@ -34,6 +35,8 @@ class RouteLogin extends Route {
             $message = $err->getMessage();
         }
         $this->controller->displayLogin(["message" => $message, "error" => $error]);
+
+        $message = urlencode($message);
 
         echo "<meta http-equiv='refresh' content='0; url=index.php?action=login&message={$message}&error={$error}' />";
     }

@@ -43,6 +43,7 @@
     * [ ] To have a initial amount for an account
     * [ ] To have unitary tests
     * [ ] To have the menu bar horizontal some times
+    * [ ] To secure the database multiples
 
 ---
 
