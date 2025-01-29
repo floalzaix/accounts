@@ -93,7 +93,7 @@ class TransactionDAO extends TransactionCategoriesDAO {
             SELECT *
             FROM transactions 
             WHERE id_account=:id AND EXTRACT(MONTH FROM date)=:month
-            ORDER BY ABS(amount)
+            ORDER BY ABS(amount) DESC
             LIMIT $limit
         ";
         $query = $this->execRequest($sql, ["id" => $id, "month" => $month]);
@@ -115,7 +115,7 @@ class TransactionDAO extends TransactionCategoriesDAO {
         return $top_transactions;
     } 
 
-    public function getBalanceEndMonth(string $id, int $month) : int {
+    public function getBalanceEndMonth(string $id, int $month) : float {
         $sql = "
             SELECT SUM(amount) as balance
             FROM transactions

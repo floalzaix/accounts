@@ -107,7 +107,7 @@ $this->layout("template", ["title" => $title, "id_account" => $id_account, "acco
                 }
             ?>
             <div class="input">
-                <input type="number" id="amount" name="amount" step="0.01" value="0"  /> €
+                <input type="number" id="amount" name="amount" step="0.01" value="0.00"  /> €
             </div>
             <input type="image" class="icon" id="submit_button" name="submit_button" alt="Soumettre" src="/public/images/icones/soumettre.png"/>
         <?php } ?>

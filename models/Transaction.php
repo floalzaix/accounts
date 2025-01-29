@@ -2,8 +2,10 @@
 
 namespace Models;
 
+use Exception;
 use IntlDateFormatter;
 use DateTime;
+use Helpers\MessageHandler;
 
 class Transaction {
     private string $id;
@@ -12,9 +14,9 @@ class Transaction {
     private string $title;
     private string $bank_date;
     private array $categories;
-    private string $amount;
+    private float $amount;
 
-    public function __construct(string $id_account, string $date, string $title, string $bank_date, string $amount) {
+    public function __construct(string $id_account, string $date, string $title, string $bank_date, float $amount) {
         $this->createId();
         $this->id_account = $id_account;
         $this->date = $date;
@@ -55,9 +57,23 @@ class Transaction {
             echo "<td class='date'>".$bank_date."</td>";
 
             for ($i = 0; $i < $nb_of_cat; $i++) {
-                echo "<td class='cat'>";
-                    echo "<div>".($i < $this->getNbOfCat() ? $this->getCategories()[$i]->getName() : "");"</div>";
-                echo "</td>";
+                $cat_on_level = false;
+                for ($j = 0; $j < $this->getNbOfCat(); $j++) {
+                    $cat = $this->getCategories()[$j];
+                    if ($cat->getLevel() == $i+1) {
+                        echo "<td class='cat'>";
+                            echo "<div>".$cat->getName()."</div>";
+                        echo "</td>";
+                        $cat_on_level = true;
+                    } 
+                }
+
+                if (!$cat_on_level && $i == 0) {
+                    MessageHandler::setMessageToPage("Une ou plusieurs transactions n'ont pas de catégories racine", "inputs", true);
+                    echo "<td class='cat'></td>";
+                } elseif (!$cat_on_level) {
+                    echo "<td class='cat'></td>";
+                }
             }
 
             echo "<td class='amount'>".$this->getAmount()."€</td>";
@@ -97,7 +113,7 @@ class Transaction {
     public function getCategories() : array {
         return $this->categories;
     }
-    public function getAmount() : string {
+    public function getAmount() : float {
         return $this->amount;
     }
 
@@ -120,7 +136,7 @@ class Transaction {
     public function setCategories(array $categories) : void {
         $this->categories = $categories;
     }
-    public function setAmount(string $amount) : void {
+    public function setAmount(float $amount) : void {
         $this->amount = $amount;
     }
 }

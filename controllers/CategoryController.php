@@ -75,7 +75,6 @@ class CategoryController {
         if (isset($switch_cat)) {
             $level = $old_cat->getLevel()+1;
             [$last_level_child_cat, $nb_same_level_sleeves, $deepest_branch_ids] = $this->getLastLevelOfChild($childs, $old_cat->getLevel());
-            var_dump($last_level_child_cat, $nb_same_level_sleeves, $switch_cat->getId(), $deepest_branch_ids);
             if ($last_level_child_cat >= $nb_max_of_cat && ($nb_same_level_sleeves != 1 || !in_array($switch_cat->getId(), $deepest_branch_ids))) {
                 throw new Exception("Erreur lors de la modification : une catégorie aurait un niveau supérieur à celui autorisé par le compte !");
             } 
@@ -94,9 +93,9 @@ class CategoryController {
             $this->category_dao->create($new_switch_cat);
         } else {
             [$last_level_child_cat, $nb_same_level_sleeves, $deepest_branch_ids] = $this->getLastLevelOfChild($childs, $old_cat->getLevel());
-            if ($last_level_child_cat - $old_cat->getLevel() + $level-1 > $nb_max_of_cat) {
+            if ($last_level_child_cat - $old_cat->getLevel() + $level-1 > $nb_max_of_cat || $level > $nb_max_of_cat) {
                 throw new Exception("Erreur lors de la modification : une catégorie aurait un niveau supérieur à celui autorisé par le compte !");
-            }
+            } 
 
             $this->category_dao->removeChild($old_cat->getIdParent() ?? "", $id);
             $this->category_dao->addChild($id_parent, $id);

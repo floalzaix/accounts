@@ -23,20 +23,29 @@ $months_mapping = [
 <div id="body_details">
     <h1> Détails </h1>
 
-    <div class="detailed_expenses" id="detailed">
-        <?php displayDetailedTab( "Dépenses", $cat_levels, $detailed_expenses, $months_mapping, $months_id, $categories_name); ?>
-    </div>
+    <?php 
+        $status_error = false;
 
-    <div class="detailed_revenues" id="detailed">
-        <?php displayDetailedTab("Revenues", $cat_levels, $detailed_revenues, $months_mapping, $months_id, $categories_name); ?>
-    </div>
+        echo "<div class='detailed_expenses' id='detailed'>";
+            $status_error |= displayDetailedTab("Dépenses", $cat_levels, $detailed_expenses, $months_mapping, $months_id, $categories_name);
+        echo "</div>";
 
-    <?= Helpers\MessageHandler::displayMessage("details") ?>
+        echo "<div class='detailed_revenues' id='detailed'>";
+            $status_error |= displayDetailedTab("Revenues", $cat_levels, $detailed_revenues, $months_mapping, $months_id, $categories_name, true); 
+        echo "</div>";
+
+        if ($status_error) {
+            Helpers\MessageHandler::setMessageToPage("Erreur le tableau de détails est faux !", "details");
+        }
+    ?>
+
+    <?php Helpers\MessageHandler::displayMessage("details") ?>
 </div>
 
 
 <?php
-    function displayDetailedTab(string $name, array $cat_levels, array $detailed_tab, array $months_mapping, array $months_id, array $categories_name) : void {
+    function displayDetailedTab(string $name, array $cat_levels, array $detailed_tab, array $months_mapping, array $months_id, array $categories_name, bool $revenue = false) : bool {
+        $status = false;
         echo "<div id='overflow'>";
             echo "<table>";
                 echo "<thead>";
@@ -52,13 +61,16 @@ $months_mapping = [
                 echo "<tbody>";
                     foreach($detailed_tab as $root_id => $root) {
                         if ($root_id != "totals") {
-                            displayCategory($root_id, $cat_levels, $root, $months_id, $categories_name);
+                            $status |= displayCategory($root_id, $cat_levels, $root, $months_id, $categories_name, $revenue);
                             echo "<tr class='spacer'><td></td></tr>";
                         } else {
                             echo "<tr>";
                                 echo "<td class='total'>Total</td>";
                                 foreach($root as $amount) {
-                                    $class = ($amount > 0) ? "revenues" : "expenses"; 
+                                    $class = ($amount >= 0) ? "revenues" : "expenses"; 
+                                    if ($class == "expenses" && $revenue) {
+                                        $status = true;
+                                    }
                                     $display = ($amount == 0) ? "" : $amount."€";
                                     echo "<td class='{$class}' id='amount_case'>".$display."</td>";
                                 }
@@ -68,9 +80,12 @@ $months_mapping = [
                 echo "</tbody>";
             echo "</table>";
         echo "</div>";
+
+        return $status;
     }
 
-    function displayCategory(string $id_category, array $cat_levels,  array $category, array $months_id, array $categories_name) : void {
+    function displayCategory(string $id_category, array $cat_levels,  array $category, array $months_id, array $categories_name, bool $revenue) : bool {
+        $status = false;
         $div_id = str_contains($id_category, "other") ? "other" : "cat_level_{$cat_levels[$id_category]}";
         echo "<tr class='cat_level_{$cat_levels[$id_category]}' id='{$div_id}'>";
             echo "<td>".$categories_name[$id_category]."</td>";
@@ -79,16 +94,24 @@ $months_mapping = [
                 if ($expense == 0) {
                     echo "<td id='amount_case'></td>";
                 } else {
-                    $class = ($expense > 0) ? "revenues" : "expenses"; 
+                    $class = ($expense >= 0) ? "revenues" : "expenses"; 
+                    if ($class == "expenses" && $revenue) {
+                        $status = true;
+                    }
                     echo "<td class='{$class}' id='amount_case'>".$expense."€</td>";
                 }
             }
-            $class = ($category["expenses_per_month_of_category"]["sum"] > 0) ? "revenues" : "expenses"; 
+            $class = ($category["expenses_per_month_of_category"]["sum"] >= 0) ? "revenues" : "expenses"; 
+            if ($class == "expenses" && $revenue) {
+                $status = true;
+            }
             $display = ($category["expenses_per_month_of_category"]["sum"] == 0) ? "" : $category["expenses_per_month_of_category"]["sum"]."€";
             echo "<td class='{$class}'>".$display."</td>";
         echo "</tr>";
         foreach($category["expenses_per_month_childs"] as $expenses_per_month_child_id => $expenses_per_month_child) {
-            displayCategory($expenses_per_month_child_id, $cat_levels, $expenses_per_month_child, $months_id, $categories_name);
+            $status |= displayCategory($expenses_per_month_child_id, $cat_levels, $expenses_per_month_child, $months_id, $categories_name, $revenue);
         }
+
+        return $status;
     }
 ?>

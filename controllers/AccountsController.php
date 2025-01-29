@@ -53,7 +53,7 @@ class AccountsController {
         $cat_levels = [];
         for($i = 1; $i <= 10; $i++) {
             $categories_name["other_{$i}"] = "Autres {$i}";
-            $cat_levels["other_{$i}"] = $i - 1;
+            $cat_levels["other_{$i}"] = $i + 1;
         }
         foreach($categories as $category) {
             $categories_name[$category->getId()] = $category->getName();
@@ -121,22 +121,22 @@ class AccountsController {
             "nb_of_categories" => $account->getNbOfCategories()
         ]);
     }
-    public function getExpensesOfAccount(string $id_account) : int {
+    public function getExpensesOfAccount(string $id_account) : float {
         return $this->account_dao->getExpenses($id_account);
     }
-    public function getRevenuesOfAccount(string $id_account) : int {
+    public function getRevenuesOfAccount(string $id_account) : float {
         return $this->account_dao->getRevenues($id_account);
     }
-    public function getMExpensesOfAccount(string $id_account, int $month) : int {
+    public function getMExpensesOfAccount(string $id_account, int $month) : float {
         return $this->account_dao->getMExpenses($id_account, $month);
     }
-    public function getMRevenuesOfAccount(string $id_account, int $month) : int {
+    public function getMRevenuesOfAccount(string $id_account, int $month) : float {
         return $this->account_dao->getMRevenues($id_account, $month);
     }
     public function getMTopTransactionsOfAccount(string $id_account, int $month) : array {
         return $this->transaction_dao->getMTopTransactions($id_account, Config::get("limit", 5), $month);
     }
-    public function getBalanceEndMonth(string $id_account, int $month) : int {
+    public function getBalanceEndMonth(string $id_account, int $month) : float {
         return $this->transaction_dao->getBalanceEndMonth($id_account, $month);
     }
     public function getDetailedExpensesOfAccount(string $id_account, int $nb_of_cat, array $categories, array $months) : array {
@@ -180,9 +180,9 @@ class AccountsController {
         foreach($months as $month => $num) {
             $S = 0;
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
-                $S+= $child_expenses_per_month["expenses_per_month_of_cateogry"][$num] ?? 0;
+                $S+= $child_expenses_per_month["expenses_per_month_of_category"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)  && $category->getLevel() != $nb_of_cat) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs)  && $category->getLevel() != $nb_of_cat && $S > -10000000000) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
@@ -251,7 +251,7 @@ class AccountsController {
             foreach($expenses_per_month_of_childs as $child_expenses_per_month) {
                 $S+= $child_expenses_per_month["expenses_per_month_of_category"][$num] ?? 0;
             }
-            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs) && $category->getLevel() != $nb_of_cat) {
+            if ($S != $expenses_per_month_of_category[$num] && !empty($expenses_per_month_of_childs) && $category->getLevel() != $nb_of_cat && $expenses_per_month_of_category[$num]-$S > 0.001) {
                 $expenses_per_month_child_without_category[$num] = $expenses_per_month_of_category[$num]-$S;
             }
         }
@@ -307,12 +307,12 @@ class AccountsController {
         ]);
     }
 
-    public function createTransaction(string $id_account, string $date, string $title, string $bank_date, array $categories, int $amount) : void {
+    public function createTransaction(string $id_account, string $date, string $title, string $bank_date, array $categories, float $amount) : void {
         $transaction = new Transaction($id_account, $date, $title, $bank_date, $amount);
         $transaction->setCategories($categories);
         $this->transaction_dao->create($transaction);
     }
-    public function editTransaction(string $id_transaction, string $id_account, string $date, string $title, string $bank_date, array $categories, int $amount) : void {
+    public function editTransaction(string $id_transaction, string $id_account, string $date, string $title, string $bank_date, array $categories, float $amount) : void {
         $transaction = new Transaction($id_account, $date, $title, $bank_date, $amount);
         $transaction->setId($id_transaction);   
         $transaction->setCategories($categories);

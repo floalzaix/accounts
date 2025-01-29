@@ -42,7 +42,7 @@ class AccountDAO extends BasePDODAO {
     }
 
     public function create(Account $account) : void {
-        $sql = "INSERT INTO accounts(id, id_user, name, nb_of_categories) VALUES(:id, :id_user, :name, :nb_of_categories)";
+        $sql = "INSERT INTO accounts(id, id_user, name, nb_of_categories) VALUES (:id, :id_user, :name, :nb_of_categories)";
         if ($this->getById($account->getId()) != null) {
             $sql = "UPDATE accounts SET id_user=:id_user, name=:name, nb_of_categories=:nb_of_categories WHERE id=:id";
         }
@@ -68,7 +68,7 @@ class AccountDAO extends BasePDODAO {
         }
     }
 
-    public function getExpenses(string $id) : int {
+    public function getExpenses(string $id) : float {
         $sql = "
             SELECT SUM(t.amount) AS expenses
             FROM transactions t
@@ -86,7 +86,7 @@ class AccountDAO extends BasePDODAO {
         return $row["expenses"] ?? 0;
     }
 
-    public function getRevenues(string $id) : int {
+    public function getRevenues(string $id) : float {
         $sql = "
             SELECT SUM(t.amount) AS revenues
             FROM transactions t
@@ -104,7 +104,7 @@ class AccountDAO extends BasePDODAO {
         return $row["revenues"] ?? 0;
     }
 
-    public function getMExpenses(string $id, int $month) : int {
+    public function getMExpenses(string $id, int $month) : float {
         $sql = "
             SELECT SUM(t.amount) AS expenses
             FROM transactions t
@@ -122,7 +122,7 @@ class AccountDAO extends BasePDODAO {
         return $row["expenses"] ?? 0;
     }
 
-    public function getMRevenues(string $id, int $month) : int {
+    public function getMRevenues(string $id, int $month) : float {
         $sql = "
             SELECT SUM(t.amount) AS revenues
             FROM transactions t

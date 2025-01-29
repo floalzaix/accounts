@@ -82,7 +82,7 @@ class UserDAO extends BasePDODAO {
         }
     }
 
-    public function getExpensesOfAllAccounts(string $id_user) : int {
+    public function getExpensesOfAllAccounts(string $id_user) : float {
         $sql = "
             SELECT SUM(t.amount) AS expenses
             FROM users u
@@ -102,7 +102,7 @@ class UserDAO extends BasePDODAO {
         return $row["expenses"] ?? 0;
     }
 
-    public function getRevenuesOfAllAccounts(string $id_user) : int {
+    public function getRevenuesOfAllAccounts(string $id_user) : float {
         $sql = "
             SELECT SUM(t.amount) AS revenues
             FROM users u

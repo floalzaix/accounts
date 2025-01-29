@@ -31,7 +31,7 @@
     * [ ] Mapping of errors with diplaying on the page => modif de la page err404 en error puis param : nbr and also handling when not given an id_account or login so it redirects to the page handling it.
     * [ ] Forgotten password
     * [ ] A display with arrows for the categories
-    * [ ] Optimisation and cleaning of the category system => the category class and DAO
+    * [ ] Optimisation and cleaning of the category system => the category class and DAO and also changing category of transactions as it is changed
     * [ ] A setting *page* to select the theme and others parametable stuff
     * [ ] A loading page with the shields for the login
     * [ ] Storing the date to the DateTime format or not ?
@@ -39,6 +39,10 @@
     * [ ] To have a mobile and ipad compatible layout
     * [ ] To have an eco conception
     * [ ] To have images to Web format
+    * [ ] Re thinking the error handling process and the mvc regarding the setMessage in details that is not appropriate and also the functions show thats not the right place and the error when there is no root to a transaction in the display of transaction (toString)
+    * [ ] To have a initial amount for an account
+    * [ ] To have unitary tests
+    * [ ] To have the menu bar horizontal some times
 
 ---
 

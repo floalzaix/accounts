@@ -40,10 +40,10 @@ class MainController {
             "balance" => $balance
         ]);
     }
-    public function getExpensesOfAllAccounts(string $id_user) : int {
+    public function getExpensesOfAllAccounts(string $id_user) : float {
         return $this->user_dao->getExpensesOfAllAccounts($id_user);
     }
-    public function getRevenuesOfAllAccounts(string $id_user) : int {
+    public function getRevenuesOfAllAccounts(string $id_user) : float {
         return $this->user_dao->getRevenuesOfAllAccounts($id_user);
     }
 
