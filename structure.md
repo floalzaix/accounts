@@ -16,7 +16,7 @@
 
 ---
 
-2. The futur possible upgrades 
+2. The futur possible upgrades and v2 v3 ...
 
 
     * [ ] To be able to add an account from an Excel container
@@ -45,6 +45,7 @@
     * [ ] To have the menu bar horizontal some times
     * [ ] To secure the database multiples
     * [ ] To secure the version of the language : stable
+    * [ ] Inclure un message d'erreur si tableau faux
 
 ---
 
