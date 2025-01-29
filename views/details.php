@@ -68,7 +68,7 @@ $months_mapping = [
                                 echo "<td class='total'>Total</td>";
                                 foreach($root as $amount) {
                                     $class = ($amount >= 0) ? "revenues" : "expenses"; 
-                                    if ($class == "expenses" && $revenue || ($class == "revenues" && !$revenue)) {
+                                    if ($class == "expenses" && $revenue) {
                                         $status = true;
                                     }
                                     $display = ($amount == 0) ? "" : $amount."€";
@@ -95,14 +95,14 @@ $months_mapping = [
                     echo "<td id='amount_case'></td>";
                 } else {
                     $class = ($expense >= 0) ? "revenues" : "expenses"; 
-                    if ($class == "expenses" && $revenue || ($class == "revenues" && !$revenue)) {
+                    if ($class == "expenses" && $revenue) {
                         $status = true;
                     }
                     echo "<td class='{$class}' id='amount_case'>".$expense."€</td>";
                 }
             }
             $class = ($category["expenses_per_month_of_category"]["sum"] >= 0) ? "revenues" : "expenses"; 
-            if ($class == "expenses" && $revenue || ($class == "revenues" && !$revenue)) {
+            if ($class == "expenses" && $revenue) {
                 $status = true;
             }
             $display = ($category["expenses_per_month_of_category"]["sum"] == 0) ? "" : $category["expenses_per_month_of_category"]["sum"]."€";
