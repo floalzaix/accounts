@@ -12,9 +12,10 @@ class TransactionCategoriesDAO extends CategoryLevelDAO {
         $sql = "
             SELECT *
             FROM categories c
-            INNER JOIN transactions_categories tc ON tc.id_category=c.id 
+            INNER JOIN transactions_categories tc ON tc.id_category=c.id
+            INNER JOIN categories_level cl ON cl.id_cat=c.id
             WHERE tc.id_transaction=:id_transaction
-            ORDER BY c.name;
+            ORDER BY cl.level;
         ";
         $query = $this->execRequest($sql, ["id_transaction" => $id_transaction]);
 
