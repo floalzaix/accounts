@@ -107,3 +107,8 @@ WHERE table_schema = 'accounts';
 FLUSH TABLES;
 COMMIT;
 
+SELECT t.id, t.id_account, t.date, t.title, t.bank_date, t.amount
+            FROM transactions t
+            WHERE t.id_account = 'account_679a239396513'
+            ORDER BY t.date, t.title;
+

@@ -121,7 +121,5 @@ class Router {
             $route->action($post, $method);
             var_dump($err->getMessage());
         }
-    } 
+    }
 }
-
-?>

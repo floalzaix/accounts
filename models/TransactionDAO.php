@@ -12,13 +12,13 @@ class TransactionDAO extends TransactionCategoriesDAO {
 
         $sql = "
             SELECT t.id, t.id_account, t.date, t.title, t.bank_date, t.amount
-            FROM transactions t 
+            FROM transactions t
             WHERE t.id_account=:id_account
-            ORDER BY date;
+            ORDER BY t.date, t.title;
         ";
         $query = $this->execRequest($sql, params: ["id_account" => $id_account]);
 
-        if ($query == false) {
+        if (!$query) {
             throw new Exception("Erreur lors de la récupération de toutes les transactions en base de donnée.");
         }
 
@@ -26,7 +26,7 @@ class TransactionDAO extends TransactionCategoriesDAO {
             $transaction = new Transaction($row["id_account"], $row["date"], $row["title"], $row["bank_date"], $row["amount"]);
             $transaction->setId($row["id"]);
             $categories = $this->getCategoriesOfTransaction($row["id"]);
-            $transaction->setCategories($categories);    
+            $transaction->setCategories($categories);
 
             $transactions[] = $transaction;
         }
