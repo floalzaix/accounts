@@ -18,6 +18,7 @@ use Controllers\Router\Routes\RouteSummary;
 use Controllers\Router\Routes\RouteDetails;
 
 use Exception;
+use Helpers\DateHandler;
 
 class Router {
     private $ctrl_list;
@@ -103,7 +104,7 @@ class Router {
                 $post["edit_category"] = true;
             } elseif ($action == "summary") {
                 $post["id_account"] = $get["id"] ?? "";
-                $post["month"] = $get["month"] ?? "january";
+                $post["month"] = $get["month"] ?? DateHandler::getTodayMonth();
             } elseif ($action == "del-account") {
                 $route = $this->route_list["home"];
                 $post["id_account"] = $get["id"] ?? "";
