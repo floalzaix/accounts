@@ -103,7 +103,7 @@ class Router {
                 $post["edit_category"] = true;
             } elseif ($action == "summary") {
                 $post["id_account"] = $get["id"] ?? "";
-                $post["month"] = $get["month"] ?? "january"; 
+                $post["month"] = $get["month"] ?? "january";
             } elseif ($action == "del-account") {
                 $route = $this->route_list["home"];
                 $post["id_account"] = $get["id"] ?? "";

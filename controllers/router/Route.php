@@ -22,7 +22,7 @@ abstract class Route {
         } else {
             throw new Exception("Erreur : la méthode fournie est ni GET ni POST dans la focntion action d'une route");
         }
-    } 
+    }
 
     protected function getParam(array $params, string $param, $canBeEmpty = false) : mixed {
         if (isset($params[$param])) {

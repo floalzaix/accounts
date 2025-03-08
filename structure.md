@@ -46,6 +46,8 @@
     * [ ] To secure the database multiples
     * [ ] To secure the version of the language : stable
     * [ ] Inclure un message d'erreur si tableau faux
+    * [ ] Inclure l'écart entre dépenses et recettes pcq sinon obligé calc
+    * [ ] Faire un truc pour le autres genre si pas d'autres sous catégories alors ne pas l'afficher.
 
 ---
 

@@ -2,21 +2,6 @@
 
 $this->layout("template", ["title" => $title, "id_account" => $id_account, "account_name" => $account_name]);
 
-$months_mapping = [
-    "january" => "Janvier",
-    "february" => "Février",
-    "march" => "Mars",
-    "april" => "Avril",
-    "may" => "Mai",
-    "june" => "Juin",
-    "july" => "Juillet",
-    "august" => "Août",
-    "september" => "Septembre",
-    "october" => "Octobre",
-    "november" => "Novembre",
-    "december" => "Décembre"
-];
-
 ?>
 
 <div id="body_summary">
@@ -36,8 +21,8 @@ $months_mapping = [
     </div>
     <form action="index.php?action=summary&id=<?= $id_account ?>" method="POST">
             <select id="month_selected" name="month_selected">
-                <?php 
-                    foreach($months_mapping as $k => $m) {
+                <?php
+                    foreach(Helpers\DateHandler::getFrenshMonths() as $k => $m) {
                         if ($month == $k) {
                             echo "<option value='{$k}' selected>$m</option>";
                         } else {

@@ -26,7 +26,7 @@ class RouteSummary extends Route {
             $error = "";
             $id_account = "";
             $month = "january";
-            try {   
+            try {
                 $id_account = parent::getParam($params, "id_account");
                 $month = parent::getParam($params, "month_selected");
             } catch (Exception $err) {

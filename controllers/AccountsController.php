@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace Controllers;
 
 use League\Plates\Engine;
 use Config\Config;
+use Helpers\DateHandler;
 use Helpers\MessageHandler;
 use Models\Account;
 use Models\AccountDAO;
@@ -26,28 +27,13 @@ class AccountsController {
     }
 
     public function displayDetails($params = []) : void {
-        $months = [
-            "january" => 1,
-            "february" => 2,
-            "march" => 3,
-            "april" => 4,
-            "may" => 5,
-            "june" => 6,
-            "july" => 7,
-            "august" => 8,
-            "september" => 9,
-            "october" => 10,
-            "november" => 11,
-            "december" => 12,
-        ];
-
         $id_account = $params["id_account"] ?? "";
         $account = $this->account_dao->getById($id_account);
 
         $categories = $this->category_dao->getAllOfAccount($id_account);
 
-        $detailed_expenses = $this->getDetailedExpensesOfAccount($id_account, $account->getNbOfCategories(),  $categories, $months);
-        $detailed_revenues = $this->getDetailedRevenuesOfAccount($id_account, $account->getNbOfCategories(), $categories, $months);
+        $detailed_expenses = $this->getDetailedExpensesOfAccount($id_account, $account->getNbOfCategories(),  $categories);
+        $detailed_revenues = $this->getDetailedRevenuesOfAccount($id_account, $account->getNbOfCategories(), $categories);
 
         $categories_name = [];
         $cat_levels = [];
@@ -64,7 +50,7 @@ class AccountsController {
         echo $this->templates->render("details", [
             "title" => Config::get("title"),
             "id_account" => $id_account,
-            "months_id" => $months,
+            "months_id" => DateHandler::getMonthsNums(),
             "account_name" => $account->getName(),
             "detailed_expenses" => $detailed_expenses,
             "detailed_revenues" => $detailed_revenues,
@@ -74,21 +60,6 @@ class AccountsController {
     }
 
     public function displaySummary($params = []) : void {
-        $months = [
-            "january" => 1,
-            "february" => 2,
-            "march" => 3,
-            "april" => 4,
-            "may" => 5,
-            "june" => 6,
-            "july" => 7,
-            "august" => 8,
-            "september" => 9,
-            "october" => 10,
-            "november" => 11,
-            "december" => 12,
-        ];
-
         $id_account = $params["id_account"] ?? "";
         $month = $params["month"] ?? "january";
 
@@ -98,17 +69,19 @@ class AccountsController {
         $revenues = $this->getRevenuesOfAccount($id_account);
         $balance = $revenues+$expenses;
 
-        $mexpenses = $this->getMExpensesOfAccount($id_account, $months[$month]);
-        $mrevenues = $this->getMRevenuesOfAccount($id_account, $months[$month]);
-        $mbalance = $this->getBalanceEndMonth($id_account, $months[$month]);
+        $month_num = DateHandler::getMonthNum($month);
 
-        $mtop_transactions = $this->getMTopTransactionsOfAccount($id_account, $months[$month]);
+        $mexpenses = $this->getMExpensesOfAccount($id_account, $month_num);
+        $mrevenues = $this->getMRevenuesOfAccount($id_account, $month_num);
+        $mbalance = $this->getBalanceEndMonth($id_account, $month_num);
+
+        $mtop_transactions = $this->getMTopTransactionsOfAccount($id_account, $month_num);
 
         MessageHandler::setMessageToPage($params["message"] ?? "", "summary", $params["error"] ?? false);
         echo $this->templates->render("summary", [
             "title" => Config::get("title"),
             "id_account" => $id_account,
-            "months_id" => $months,
+            "months_id" => DateHandler::getMonthsNums(),
             "month" => $month,
             "account_name" => $account->getName(),
             "balance" => $balance,
@@ -139,16 +112,16 @@ class AccountsController {
     public function getBalanceEndMonth(string $id_account, int $month) : float {
         return $this->transaction_dao->getBalanceEndMonth($id_account, $month);
     }
-    public function getDetailedExpensesOfAccount(string $id_account, int $nb_of_cat, array $categories, array $months) : array {
+    public function getDetailedExpensesOfAccount(string $id_account, int $nb_of_cat, array $categories) : array {
         $tab = [];
         foreach($categories as $category) {
             if($category->getLevel() == 1) {
-                $tab[$category->getId()] = $this->getDetailedExpensesPerMonthOfCategory($id_account, $nb_of_cat, $category, $months);
+                $tab[$category->getId()] = $this->getDetailedExpensesPerMonthOfCategory($id_account, $nb_of_cat, $category, DateHandler::getMonthsNums());
             }
         }
         
         $tot = 0;
-        foreach($months as $m => $num) {
+        foreach(DateHandler::getMonthsNums() as $m => $num) {
             $S = 0;
             foreach($tab as $roots) {
                 $S+= $roots["expenses_per_month_of_category"][$num] ?? 0;
@@ -208,16 +181,16 @@ class AccountsController {
 
         return ["expenses_per_month_of_category" => $expenses_per_month_of_category, "expenses_per_month_childs" => $expenses_per_month_of_childs];
     }
-    public function getDetailedRevenuesOfAccount(string $id_account, int $nb_of_cat, array $categories, array $months) : array {
+    public function getDetailedRevenuesOfAccount(string $id_account, int $nb_of_cat, array $categories) : array {
         $tab = [];
         foreach($categories as $category) {
             if($category->getLevel() == 1) {
-                $tab[$category->getId()] = $this->getDetailedRevenuesPerMonthOfCategory($id_account, $nb_of_cat, $category, $months);
+                $tab[$category->getId()] = $this->getDetailedRevenuesPerMonthOfCategory($id_account, $nb_of_cat, $category, DateHandler::getMonthsNums());
             }
         }
         
         $tot = 0;
-        foreach($months as $m => $num) {
+        foreach(DateHandler::getMonthsNums() as $m => $num) {
             $S = 0;
             foreach($tab as $roots) {
                 $S+= $roots["expenses_per_month_of_category"][$num] ?? 0;
