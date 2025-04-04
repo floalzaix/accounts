@@ -48,10 +48,16 @@
     * [ ] Inclure un message d'erreur si tableau faux
     * [ ] Inclure l'écart entre dépenses et recettes pcq sinon obligé calc
     * [ ] Faire un truc pour le autres genre si pas d'autres sous catégories alors ne pas l'afficher.
+    * [ ] Important : Faire des stats inter comptes genre tableau detaille + et - pour tous les comptes
+    * [ ] Refactoriser les vues et les objets genre tableau detaille devrait etre un objet et avoir sa vue
+    * [ ] Reflechir sur transaction inter compte pour le décompter des dépenses et le mettre dans l'autre compte
+    * [ ] Même chose avec virement joint pour que sa ne comptabilise pas une persone qui donne 250 pour que une des deux virent 500
+    * [ ] Important : Ajouter des ecarts non sang + aussi le système de voir combien son les ecart de solde entre chaque mois pour voir l'epargne
+    * [ ] VOIR L'EPARGNE QQPART
 
 ---
 
-3. Architecture 
+1. Architecture 
 
     The project will be implemented with a **MVC** (Model View Controller) architecture.
 
